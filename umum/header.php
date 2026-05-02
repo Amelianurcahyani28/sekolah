@@ -30,7 +30,7 @@
                 <li class="nav-item"><a class="nav-link" href="gallery.php">Gallery</a></li>
                 <li class="nav-item"><a class="nav-link" href="artikel.php">Artikel</a></li>
                 <li class="nav-item ms-lg-3"><a class="btn-daftar" href="daftar.php">Daftar</a></li>
-                <li class="nav-item"><a class="nav-link text-danger small ms-3" href="login.php">Admin</a></li>
+                <li class="nav-item"><a class="nav-link text-danger small ms-3" href="../admin/login.php">Admin</a></li>
             </ul>
         </div>
     </div>

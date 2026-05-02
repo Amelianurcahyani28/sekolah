@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $pass = $_POST['password'];
 
     // username & password manual
-    if ($user == "admin" && $pass == "123") {
+    if ($user == "maessarbayan" && $pass == "298") {
         $_SESSION['login'] = true;
 
         header("Location: admin.php");
