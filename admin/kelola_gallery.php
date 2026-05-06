@@ -24,9 +24,11 @@ if (isset($_POST['tambah'])) {
             mysqli_query($conn, "INSERT INTO gallery (judul, keterangan, gambar) 
             VALUES ('$judul', '$deskripsi', '$file_name')");
 
-            echo "<script>alert('Foto berhasil ditambahkan!');</script>";
+            header("Location: ?page=gallery&status=success");
+            exit;
         } else {
-            echo "<script>alert('Upload gagal!');</script>";
+            header("Location: ?page=gallery&status=failed");
+            exit;
         }
     }
 }
