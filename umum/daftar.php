@@ -44,37 +44,18 @@
                             <input type="date" name="tanggal_lahir" class="form-control" required>
                         </div>
                     </div>
-                    <hr class="my-3">
-                    <h6 class="fw-bold text-primary mb-3">👨‍👩‍👧 Data Orang Tua</h6>
                     <div class="mb-3">
-                        <label class="form-label small">Nama Ayah</label>
+                        <label class="form-label small">Nama Orang Tua</label>
                         <input type="text" name="nama_ayah" class="form-control" placeholder="Nama lengkap ayah" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small">Nama Ibu</label>
-                        <input type="text" name="nama_ibu" class="form-control" placeholder="Nama lengkap ibu" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small">Pekerjaan Orang Tua</label>
-                        <input type="text" name="pekerjaan_ortu" class="form-control" placeholder="Contoh: Wiraswasta / IRT">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label small">No. HP Ayah</label>
+                            <label class="form-label small">No.tlpn orang tua</label>
                             <input type="text" name="no_hp_ayah" class="form-control" placeholder="0812xxxxxxx">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small">No. HP Ibu</label>
-                            <input type="text" name="no_hp_ibu" class="form-control" placeholder="0813xxxxxxx">
-                        </div>
-                    </div>
+                        </div> 
                     <div class="mb-3">
                         <label class="form-label small">Alamat Lengkap</label>
                         <textarea name="alamat" class="form-control" rows="2" placeholder="Alamat lengkap"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small">Alamat Orang Tua (jika berbeda)</label>
-                        <textarea name="alamat_ortu" class="form-control" rows="2" placeholder="Kosongkan jika sama dengan alamat di atas"></textarea>
                     </div>
                     <button type="submit" class="btn btn-daftar w-100 py-2">Kirim Pendaftaran</button>
                 </form>

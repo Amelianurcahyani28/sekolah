@@ -3,20 +3,49 @@
 include 'koneksi.php';
 
 // Update konten profil
+$cek = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+$data = mysqli_fetch_assoc($cek);
+
 if (isset($_POST['update'])) {
+
     $tentang = $_POST['tentang'];
-    $visi = $_POST['visi'];
-    $misi = $_POST['misi'];
+    $sarana = $_POST['sarana'];
+    $prasarana = $_POST['prasarana'];
     $kepsek_nama = $_POST['kepsek_nama'];
     $kepsek_quote = $_POST['kepsek_quote'];
-    
-    // Cek apakah data ada
-    $cek = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-    if (mysqli_num_rows($cek) > 0) {
-        mysqli_query($conn, "UPDATE profil SET tentang='$tentang', visi='$visi', misi='$misi', kepsek_nama='$kepsek_nama', kepsek_quote='$kepsek_quote' WHERE id=1");
-    } else {
-        mysqli_query($conn, "INSERT INTO profil VALUES('', '$tentang', '$visi', '$misi', '$kepsek_nama', '$kepsek_quote')");
+
+    // Handle foto upload
+    $kepsek_foto = $data['kepsek_foto'] ?? '';
+    if (!empty($_FILES['kepsek_foto']['name'])) {
+        $target_dir = "../umum/foto/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        $file_name = time() . '_' . basename($_FILES['kepsek_foto']['name']);
+        $target_file = $target_dir . $file_name;
+
+        if (move_uploaded_file($_FILES['kepsek_foto']['tmp_name'], $target_file)) {
+            $kepsek_foto = $file_name;
+        }
     }
+
+    $cek = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+
+    if (mysqli_num_rows($cek) > 0) {
+        mysqli_query($conn, "UPDATE profil SET 
+        tentang='$tentang',
+        sarana='$sarana',
+        prasarana='$prasarana',
+        kepsek_nama='$kepsek_nama',
+        kepsek_quote='$kepsek_quote',
+        kepsek_foto='$kepsek_foto'");
+    } else {
+        mysqli_query($conn, "INSERT INTO profil 
+        (tentang, sarana, prasarana, kepsek_nama, kepsek_quote, kepsek_foto) 
+        VALUES 
+        ('$tentang', '$sarana', '$prasarana', '$kepsek_nama', '$kepsek_quote', '$kepsek_foto')");
+    }
+
     echo "<script>alert('Berhasil diperbarui!');</script>";
 }
 
@@ -24,8 +53,8 @@ if (isset($_POST['update'])) {
 $data = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
 $row = mysqli_fetch_assoc($data) ?? [
     'tentang' => 'TK Maessar Bayan adalah lembaga pendidikan anak usia dini...',
-    'visi' => 'Menjadi sekolah TK yang terbaik...',
-    'misi' => 'Menyediakan pendidikan berkualitas...',
+    'sarana' => 'Memiliki fasilitas ruang kelas yang memadai...',
+    'prasarana' => 'Terdapat area bermain yang aman dan nyaman...',
     'kepsek_nama' => 'Hj. Siti Aisyah, S.Pd',
     'kepsek_quote' => 'Pendidikan adalah tiket masa depan...'
 ];
@@ -38,7 +67,7 @@ $row = mysqli_fetch_assoc($data) ?? [
 
 <div class="card-admin mb-4">
     <h5 class="mb-4"><i class="fas fa-school"></i> Tentang Kami</h5>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">Tentang Sekolah</label>
             <textarea name="tentang" class="form-control" rows="4" required><?= htmlspecialchars($row['tentang']); ?></textarea>
@@ -46,14 +75,14 @@ $row = mysqli_fetch_assoc($data) ?? [
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label class="form-label">Visi</label>
-                    <textarea name="visi" class="form-control" rows="3" required><?= htmlspecialchars($row['visi']); ?></textarea>
+                    <label class="form-label">Sarana</label>
+                    <textarea name="sarana" class="form-control" rows="3" required><?= htmlspecialchars($row['sarana']); ?></textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label class="form-label">Misi</label>
-                    <textarea name="misi" class="form-control" rows="3" required><?= htmlspecialchars($row['misi']); ?></textarea>
+                    <label class="form-label">Prasarana</label>
+                    <textarea name="prasarana" class="form-control" rows="3" required><?= htmlspecialchars($row['prasarana']); ?></textarea>
                 </div>
             </div>
         </div>
@@ -62,16 +91,25 @@ $row = mysqli_fetch_assoc($data) ?? [
         
         <h5 class="mb-4"><i class="fas fa-user-tie"></i> Kepala Sekolah</h5>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Nama Kepala Sekolah</label>
                     <input type="text" name="kepsek_nama" class="form-control" value="<?= htmlspecialchars($row['kepsek_nama']); ?>" required>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">Quote</label>
                     <input type="text" name="kepsek_quote" class="form-control" value="<?= htmlspecialchars($row['kepsek_quote']); ?>" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Foto Kepala Sekolah (Opsional)</label>
+                    <input type="file" name="kepsek_foto" class="form-control" accept="image/*">
+                    <?php if (!empty($row['kepsek_foto'])) : ?>
+                        <div class="mt-2 text-muted small">Sudah ada foto: <?= htmlspecialchars($row['kepsek_foto']) ?></div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

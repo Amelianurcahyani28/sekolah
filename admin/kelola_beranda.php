@@ -30,6 +30,11 @@ $gallery_total = $gallery_row['total'];
 $artikel_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM artikel");
 $artikel_row = mysqli_fetch_assoc($artikel_count);
 $artikel_total = $artikel_row['total'];
+
+// Hitung total siswa (Pendaftaran Baru)
+$siswa_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa");
+$siswa_row = mysqli_fetch_assoc($siswa_count);
+$siswa_total = $siswa_row['total'];
 ?>
 
 <div class="page-header">
@@ -39,19 +44,23 @@ $artikel_total = $artikel_row['total'];
 
 <div class="row mt-4">
     <div class="col-md-4">
-        <div class="stat-card">
-            <div class="stat-number"><?php echo $gallery_total; ?></div>
-            <div class="stat-label">Gallery Published</div>
-        </div>
+        <a href="?page=gallery" style="text-decoration: none; color: inherit; display: block;">
+            <div class="stat-card">
+                <div class="stat-number"><?php echo $gallery_total; ?></div>
+                <div class="stat-label">Gallery Published</div>
+            </div>
+        </a>
     </div>
     <div class="col-md-4">
-        <div class="stat-card">
-            <div class="stat-number">54</div>
-            <div class="stat-label">Pendaftaran Baru</div>
-        </div>
+        <a href="?page=siswa" style="text-decoration: none; color: inherit; display: block;">
+            <div class="stat-card">
+                <div class="stat-number"><?php echo $siswa_total; ?></div>
+                <div class="stat-label">Pendaftaran Baru</div>
+            </div>
+        </a>
     </div>
     <div class="col-md-4">
-        <a href="kelola_artikel.php" style="text-decoration: none; color: inherit; display: block;">
+        <a href="?page=artikel" style="text-decoration: none; color: inherit; display: block;">
             <div class="stat-card">
                 <div class="stat-number"><?php echo $artikel_total; ?></div>
                 <div class="stat-label">Artikel Published</div>

@@ -9,10 +9,11 @@ if (isset($_POST['tambah'])) {
     $alamat = $_POST['alamat'];
     $ortu = $_POST['ortu'];
     $no_ortu = $_POST['no_ortu'];
+    $jenis_kelamin = $_POST['jenis_kelamin'];
 
     mysqli_query($conn, "INSERT INTO siswa 
-    (nama_anak, tanggal_lahir, alamat, nama_ortu, no_hp) 
-    VALUES ('$nama', '$ttl', '$alamat', '$ortu', '$no_ortu')");
+    (nama_anak, tanggal_lahir, alamat, nama_ortu, no_hp, jenis_kelamin) 
+    VALUES ('$nama', '$ttl', '$alamat', '$ortu', '$no_ortu', '$jenis_kelamin')");
 
     echo "<script>alert('Siswa berhasil ditambahkan!');</script>";
 }
@@ -54,6 +55,14 @@ $data = mysqli_query($conn, "SELECT * FROM siswa ORDER BY id DESC");
         <div class="mb-3">
             <label class="form-label">Alamat</label>
             <textarea name="alamat" class="form-control" rows="2" placeholder="Alamat lengkap" required></textarea>
+        </div>
+          <div class="mb-3">
+            <label class="form-label">Jenis Kelamin</label>
+            <select name="jenis_kelamin" class="form-select" required>
+                <option value="">-- Pilih --</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
         </div>
         <div class="row">
             <div class="col-md-6">

@@ -17,6 +17,11 @@ if (isset($_POST['tambah'])) {
 
     if (!empty($_FILES['gambar']['name'])) {
         $target_dir = "../umum/foto/";
+        
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        
         $file_name = time() . '_' . basename($_FILES['gambar']['name']);
         $target_file = $target_dir . $file_name;
 

@@ -9,6 +9,11 @@ if (isset($_POST['tambah'])) {
     if ($_FILES['gambar']['name']) {
         $target_dir = "../umum/foto/";
 
+        // Buat folder jika belum ada
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
         // Biar nama file tidak bentrok
         $file_name = time() . '_' . basename($_FILES['gambar']['name']);
         $target_file = $target_dir . $file_name;
