@@ -135,6 +135,9 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
                     </td>
                     <td><?= substr(htmlspecialchars($row['isi']), 0, 80); ?>...</td>
                     <td>
+                        <a href="edit_artikel.php?id=<?= $row['id']; ?>" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
                         <a href="?page=artikel&hapus=<?= $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">
                             <i class="fas fa-trash"></i> Hapus
                         </a>

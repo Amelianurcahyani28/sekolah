@@ -7,42 +7,58 @@ if (!isset($_SESSION['login'])) {
 include '../umum/koneksi.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$query = "SELECT * FROM siswa WHERE id = $id";
+$query = "SELECT * FROM artikel WHERE id = $id";
 $result = mysqli_query($conn, $query);
 $data = mysqli_fetch_assoc($result);
 
 if (!$data) {
-    echo "<script>alert('Data tidak ditemukan!'); window.location='admin.php?page=siswa';</script>";
+    echo "<script>alert('Data artikel tidak ditemukan!'); window.location='admin.php?page=artikel';</script>";
     exit;
 }
 
 if (isset($_POST['update'])) {
-    $nama_anak      = mysqli_real_escape_string($conn, $_POST['nama']);
-    $tanggal_lahir  = mysqli_real_escape_string($conn, $_POST['ttl']); 
-    $alamat         = mysqli_real_escape_string($conn, $_POST['alamat']);
-    $jenis_kelamin  = mysqli_real_escape_string($conn, $_POST['jenis_kelamin']);
-    $nama_ayah      = mysqli_real_escape_string($conn, $_POST['nama_ayah']); 
-    $nama_ibu       = mysqli_real_escape_string($conn, $_POST['nama_ibu']); 
-    $no_hp_ortu     = mysqli_real_escape_string($conn, $_POST['no_ortu']);
+    $judul = mysqli_real_escape_string($conn, $_POST['judul']);
+    $isi = mysqli_real_escape_string($conn, $_POST['isi']);
+    $kategori = mysqli_real_escape_string($conn, $_POST['kategori']);
+    $gambar = $data['gambar']; // Gambar lama sebagai default
 
-    $query_update = "UPDATE siswa SET 
-                        nama_anak = '$nama_anak', 
-                        jenis_kelamin = '$jenis_kelamin', 
-                        tanggal_lahir = '$tanggal_lahir', 
-                        nama_ayah = '$nama_ayah', 
-                        nama_ibu = '$nama_ibu', 
-                        no_hp_ortu = '$no_hp_ortu', 
-                        alamat = '$alamat' 
+    // Cek jika ada gambar baru yang diunggah
+    if (!empty($_FILES['gambar']['name'])) {
+        $target_dir = "../umum/foto/";
+        
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        
+        $file_name = time() . '_' . basename($_FILES['gambar']['name']);
+        $target_file = $target_dir . $file_name;
+
+        if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+            // Hapus gambar lama jika ada
+            if (!empty($gambar) && file_exists($target_dir . $gambar)) {
+                unlink($target_dir . $gambar);
+            }
+            $gambar = $file_name;
+        } else {
+            echo "<script>alert('Upload gambar baru gagal. Menggunakan gambar lama.');</script>";
+        }
+    }
+
+    $query_update = "UPDATE artikel SET 
+                        judul = '$judul', 
+                        isi = '$isi', 
+                        kategori = '$kategori', 
+                        gambar = '$gambar' 
                      WHERE id = $id";
 
     if (mysqli_query($conn, $query_update)) {
         echo "<script>
-                alert('Data siswa berhasil diupdate!');
-                window.location='admin.php?page=siswa';
+                alert('Artikel berhasil diupdate!');
+                window.location='admin.php?page=artikel';
               </script>";
         exit;
     } else {
-        $error_msg = "Gagal mengupdate data: " . mysqli_error($conn);
+        $error_msg = "Gagal mengupdate artikel: " . mysqli_error($conn);
     }
 }
 ?>
@@ -51,7 +67,7 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Siswa - Admin TK Maessar Bayan</title>
+    <title>Edit Artikel - Admin TK Maessar Bayan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -77,7 +93,7 @@ if (isset($_POST['update'])) {
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(255, 133, 162, 0.2);
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             padding: 35px;
             position: relative;
         }
@@ -151,61 +167,57 @@ if (isset($_POST['update'])) {
         .close-btn:hover {
             color: var(--cute-pink);
         }
+        .img-preview {
+            max-width: 200px;
+            border-radius: 10px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
 
     <div class="edit-card">
-        <a href="admin.php?page=siswa" class="close-btn" title="Tutup"><i class="fas fa-times-circle"></i></a>
-        <h4 class="mb-4 text-center"><i class="fas fa-user-edit"></i> Edit Data Siswa</h4>
+        <a href="admin.php?page=artikel" class="close-btn" title="Tutup"><i class="fas fa-times-circle"></i></a>
+        <h4 class="mb-4 text-center"><i class="fas fa-edit"></i> Edit Artikel</h4>
         
         <?php if (isset($error_msg)): ?>
             <div class="alert alert-danger rounded-3"><?= $error_msg; ?></div>
         <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Nama Anak</label>
-                    <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($data['nama_anak']); ?>" required>
+                <div class="col-md-8 mb-3">
+                    <label class="form-label">Judul Artikel</label>
+                    <input type="text" name="judul" class="form-control" value="<?= htmlspecialchars($data['judul']); ?>" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Tempat, Tanggal Lahir</label>
-                    <input type="text" name="ttl" class="form-control" value="<?= htmlspecialchars($data['tanggal_lahir']); ?>" required>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Kategori</label>
+                    <select name="kategori" class="form-select" required>
+                        <option value="edukasi" <?= ($data['kategori'] == 'edukasi') ? 'selected' : ''; ?>>📚 Edukasi</option>
+                        <option value="parenting" <?= ($data['kategori'] == 'parenting') ? 'selected' : ''; ?>>👨‍👩‍👧 Parenting</option>
+                        <option value="kesehatan" <?= ($data['kategori'] == 'kesehatan') ? 'selected' : ''; ?>>💪 Kesehatan</option>
+                        <option value="kegitan" <?= ($data['kategori'] == 'kegitan') ? 'selected' : ''; ?>>🎉 Kegiatan</option>
+                    </select>
                 </div>
             </div>
             
             <div class="mb-3">
-                <label class="form-label">Alamat</label>
-                <textarea name="alamat" class="form-control" rows="2" required><?= htmlspecialchars($data['alamat']); ?></textarea>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Jenis Kelamin</label>
-                <select name="jenis_kelamin" class="form-select" required>
-                    <option value="Laki-laki" <?= ($data['jenis_kelamin'] == 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
-                    <option value="Perempuan" <?= ($data['jenis_kelamin'] == 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
-                </select>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Nama Ayah</label>
-                    <input type="text" name="nama_ayah" class="form-control" value="<?= htmlspecialchars($data['nama_ayah']); ?>" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Nama Ibu</label>
-                    <input type="text" name="nama_ibu" class="form-control" value="<?= htmlspecialchars($data['nama_ibu']); ?>" required>
-                </div>
+                <label class="form-label">Isi Artikel</label>
+                <textarea name="isi" class="form-control" rows="8" required><?= htmlspecialchars($data['isi']); ?></textarea>
             </div>
             
             <div class="mb-4">
-                <label class="form-label">No. Telepon Orang Tua</label>
-                <input type="text" name="no_ortu" class="form-control" value="<?= htmlspecialchars($data['no_hp_ortu']); ?>" required>
+                <label class="form-label">Ganti Foto Artikel (Opsional)</label>
+                <input type="file" name="gambar" class="form-control" accept="image/*">
+                <?php if (!empty($data['gambar'])) : ?>
+                    <div class="mt-2 text-muted small">Foto saat ini:</div>
+                    <img src="../umum/foto/<?= htmlspecialchars($data['gambar']); ?>" class="img-preview" alt="Foto Saat Ini">
+                <?php endif; ?>
             </div>
             
             <div class="d-flex gap-3 mt-2">
-                <a href="admin.php?page=siswa" class="btn btn-batal flex-fill">
+                <a href="admin.php?page=artikel" class="btn btn-batal flex-fill">
                     <i class="fas fa-arrow-left"></i> Batal
                 </a>
                 <button type="submit" name="update" class="btn btn-custom flex-fill">

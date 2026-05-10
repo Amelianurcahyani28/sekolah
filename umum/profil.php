@@ -3,15 +3,17 @@ include 'header.php';
 include 'koneksi.php';
 
 // Ambil data profil dari database
-$data = mysqli_query($conn, "SELECT tentang, sarana, prasarana, kepsek_nama, kepsek_quote, kepsek_foto FROM profil LIMIT 1");
+$data = mysqli_query($conn, "SELECT tentang, visi, misi, kepsek_nama, kepsek_quote, kepsek_foto, foto_sekolah, foto_hero FROM profil LIMIT 1");
 $row = $data ? mysqli_fetch_assoc($data) : null;
 
 $tentang     = $row['tentang']      ?? 'TK Maessar Bayan adalah lembaga pendidikan anak usia dini yang berfokus pada perkembangan karakter dan potensi anak. Kami menyediakan lingkungan belajar yang aman, nyaman, dan penuh warna untuk buah hati Anda. 🎨';
-$sarana      = $row['sarana']       ?? 'Memiliki fasilitas ruang kelas yang memadai...';
-$prasarana   = $row['prasarana']    ?? 'Terdapat area bermain yang aman dan nyaman...';
+$visi      = $row['visi']       ?? 'Memiliki fasilitas ruang kelas yang memadai...';
+$misi   = $row['misi']    ?? 'Terdapat area bermain yang aman dan nyaman...';
 $kepsek_nama  = $row['kepsek_nama'] ?? 'Hj. Siti Aisyah, S.Pd';
 $kepsek_quote = $row['kepsek_quote'] ?? 'Pendidikan adalah tiket masa depan bagi mereka yang menyiapkannya hari ini.';
 $kepsek_foto  = !empty($row['kepsek_foto']) ? 'foto/' . $row['kepsek_foto'] : 'kepsek.jpeg';
+$foto_sekolah = !empty($row['foto_sekolah']) ? 'foto/' . $row['foto_sekolah'] : 'sekolah.jpeg';
+$foto_hero    = !empty($row['foto_hero']) ? 'foto/' . $row['foto_hero'] : '';
 
 $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 ?>
@@ -198,7 +200,7 @@ $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
-                <h2 class="profil-title">Profil TK Maessar Bayan</h2>
+                <h2 class="profil-title">Profil PAUD Maessar Bayan</h2>
                 <p class="profil-subtitle">Mengenal lebih dekat lembaga pendidikan tercinta 🌟</p>
                 <div class="divider-cute"></div>
                 <div class="mt-3">
@@ -217,9 +219,14 @@ $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 <div class="container pb-5">
 
     <!-- Gambar Utama -->
-    <div class="main-image-container">
-        <img src="sekolah.jpeg" alt="TK Maessar Bayan">
+   
+
+    <!-- Foto Banner / Tambahan Atas Kolom -->
+    <?php if ($foto_hero): ?>
+    <div class="text-center mb-4">
+        <img src="<?= $escape($foto_hero); ?>" alt="Banner TK Maessar Bayan" style="max-width: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(255,133,162,0.25);">
     </div>
+    <?php endif; ?>
 
     <div class="row">
         <!-- Kolom Kiri: Tentang + Visi Misi -->
@@ -257,17 +264,17 @@ $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 
             <!-- Sarana & Prasarana -->
             <div class="cute-card">
-                <h3 class="section-title-cute purple">Sarana &amp; Prasarana</h3>
+                <h3 class="section-title-cute purple">Visi &amp; Misi</h3>
                 <div class="sarana-prasarana-grid">
                     <div class="sp-box sarana">
                         <span class="sp-box-icon">🏫</span>
-                        <div class="sp-box-title">Sarana</div>
-                        <p class="sp-box-text"><?= $escape($sarana); ?></p>
+                        <div class="sp-box-title">Visi</div>
+                        <p class="sp-box-text"><?= $escape($visi); ?></p>
                     </div>
                     <div class="sp-box prasarana">
                         <span class="sp-box-icon">🎠</span>
-                        <div class="sp-box-title">Prasarana</div>
-                        <p class="sp-box-text"><?= $escape($prasarana); ?></p>
+                        <div class="sp-box-title">Misi</div>
+                        <p class="sp-box-text"><?= $escape($misi); ?></p>
                     </div>
                 </div>
             </div>

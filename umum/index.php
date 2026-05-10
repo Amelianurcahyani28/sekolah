@@ -373,7 +373,7 @@ body::before {
                 <p class="subtitle-cute">Pendidikan usia dini yang dirancang untuk menginspirasi kreativitas dan rasa percaya diri anak.</p>
                 <div class="bubble-chat">
                     <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/animal-2023924_1280.png" alt="Maskot" class="bubble-avatar">
-                    <div class="bubble-text">Hai, selamat datang di TK Maessar Bayan! Yuk, belajar sambil bermain! 🥰</div>
+                    <div class="bubble-text">Hai, selamat datang di Paud Maessar Bayan! Yuk, belajar sambil bermain! 🥰</div>
                 </div>
             </div>
             <div class="col-md-6 text-center mt-4 mt-md-0">

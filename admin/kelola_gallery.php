@@ -96,8 +96,11 @@ $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
             <td><?= htmlspecialchars($row['keterangan']); ?></td>
 
             <td>
-                <a href="?page=gallery&hapus=<?= $row['id']; ?>" 
-                onclick="return confirm('Yakin?')">Hapus</a>
+                <a href="edit_gallery.php?id=<?= $row['id']; ?>" class="btn btn-warning btn-sm me-2">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="?page=gallery&hapus=<?= $row['id']; ?>" class="btn btn-danger btn-sm"
+                onclick="return confirm('Yakin?')"><i class="fas fa-trash"></i> Hapus</a>
             </td>
         </tr>
         <?php endwhile; ?>
