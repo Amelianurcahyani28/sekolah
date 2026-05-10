@@ -22,7 +22,7 @@ if (!in_array($page, $allowedPages, true)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin TK Maessar Bayan</title>
+    <title>Admin PAUD Maessar Bayan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -187,7 +187,7 @@ if (!in_array($page, $allowedPages, true)) {
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 sidebar p-4">
                 <div class="text-center sidebar-brand">
-                    🎈 Admin TK
+                    🎈 Admin PAUD
                 </div>
                 <div class="nav flex-column mt-4">
                     <a href="?page=beranda" class="nav-link <?= $page == 'beranda' ? 'active' : '' ?>">
