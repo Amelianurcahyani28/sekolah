@@ -52,3 +52,4 @@ INSERT INTO profil (tentang, visi, misi, kepsek_nama, kepsek_quote) VALUES
 'Menyediakan pendidikan berkualitas dengan metode pembelajaran yang menyenangkan.',
 'Hj. Siti Aisyah, S.Pd',
 'Pendidikan adalah tiket masa depan bagi mereka yang menyiapkannya hari ini.');
+
