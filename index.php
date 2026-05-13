@@ -369,7 +369,7 @@ footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
             </div>
             <div class="col-lg-6">
                 <div class="hero-img-container">
-                    <img src="barengan.jpeg" alt="Siswa PAUD Maessar Bayan">
+                    <img src="umum/barengan.jpeg" alt="Siswa PAUD Maessar Bayan">
                     <div class="hero-img-badge">
                         <span class="icon">🏫</span>
                         <div class="text">
@@ -423,10 +423,10 @@ footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
     <div class="container">
         <h2>Bergabunglah Bersama Kami 🌟</h2>
         <p>Daftarkan putra-putri Anda dan biarkan kami menemani perjalanan belajar terbaik mereka.</p>
-        <a href="daftar.php" class="btn-white">
+        <a href="umum/daftar.php" class="btn-white">
             Daftar Sekarang →
         </a>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'umum/footer.php'; ?>
