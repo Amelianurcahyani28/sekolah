@@ -19,13 +19,15 @@ $row = mysqli_fetch_assoc($data) ?? ['judul' => 'TK Maessar Bayan', 'deskripsi' 
 $gallery_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM gallery"))['total'];
 $artikel_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM artikel"))['total'];
 $siswa_total   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa"))['total'];
+$perkembangan_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM perkembangan_anak"))['total'];
 ?>
 
 <style>
 .page-title { font-size:1.4rem; font-weight:800; color:#0f172a; margin-bottom:4px; }
 .page-sub   { font-size:.88rem; color:#64748b; margin-bottom:28px; }
 
-.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px; }
+.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+@media(max-width:1024px){ .stat-grid{grid-template-columns:repeat(2,1fr);} }
 @media(max-width:640px){ .stat-grid{grid-template-columns:1fr;} }
 
 .stat-box {
@@ -42,6 +44,7 @@ $siswa_total   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tota
 .s-purple { background:#ede9fe; }
 .s-blue   { background:#e0f2fe; }
 .s-green  { background:#dcfce7; }
+.s-orange { background:#fff7ed; }
 .stat-box .s-num {
     font-size:2rem; font-weight:800;
     background:linear-gradient(135deg,#6366f1,#8b5cf6);
@@ -85,6 +88,11 @@ $siswa_total   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tota
         <div class="s-icon s-blue">👶</div>
         <div class="s-num"><?= $siswa_total ?></div>
         <div class="s-lbl">Data Siswa</div>
+    </a>
+    <a href="?page=perkembangan" class="stat-box">
+        <div class="s-icon s-orange">🏆</div>
+        <div class="s-num"><?= $perkembangan_total ?></div>
+        <div class="s-lbl">Perkembangan</div>
     </a>
     <a href="?page=artikel" class="stat-box">
         <div class="s-icon s-green">📰</div>
