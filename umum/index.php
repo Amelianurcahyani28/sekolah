@@ -1,419 +1,431 @@
 <?php include 'header.php'; ?>
 
 <style>
-/* ============================================
-   TK Maessar Bayan - Style CSS
-   Desain Lucu & Menggemaskan untuk PAUD
-   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* Variabel Warna Utama */
-:root {
-    /* Warna Pastel Ceria */
-    --pastel-pink: #ffb6c1;
-    --pastel-purple: #dda0dd;
-    --pastel-blue: #87ceeb;
-    --pastel-yellow: #ffeaa7;
-    --pastel-green: #98d8c8;
-    --pastel-orange: #ffcc80;
-    --pastel-peach: #ffdab9;
-    --pastel-mint: #b2fba5;
-    
-    /* Warna Ceria */
-    --cute-pink: #ff85a2;
-    --cute-purple: #b19cd9;
-    --cute-blue: #7ec8e3;
-    --cute-yellow: #ffd93d;
-    --cute-coral: #ff7f7f;
-    
-    /* Warna Utama */
-    --primary-green: #a5d6a7;
-    --light-green: #e8f5e9;
-    --dark-green: #2e7d32;
-    --soft-white: #f9fbf9;
-}
+* { box-sizing: border-box; }
 
-/* BASE STYLES */
 body {
-    font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, #fff5f5 0%, #f0f9ff 50%, #f5fff0 100%);
-    color: #444;
-    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    margin: 0;
 }
 
-/* Decorative Background */
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(135, 206, 235, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(221, 160, 221, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* NAVBAR override */
+/* ── NAVBAR OVERRIDE ── */
 .navbar {
-    background: linear-gradient(90deg, #ffffff 0%, #fff9f9 100%) !important;
-    box-shadow: 0 4px 15px rgba(255, 133, 162, 0.15);
-    border-bottom: 4px solid var(--pastel-pink) !important;
-    border-radius: 0 0 20px 20px;
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+    border-radius: 0 !important;
+    padding: 14px 0;
 }
 .navbar-brand {
-    background: linear-gradient(45deg, var(--cute-pink), var(--cute-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 1.5rem !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 1.3rem !important;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
 }
+.nav-link { font-weight: 500; color: #64748b !important; transition: color .2s; font-size: .9rem; }
+.nav-link:hover, .nav-link.active { color: #6366f1 !important; }
+.btn-daftar {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    font-size: .88rem !important;
+    transition: opacity .2s, transform .2s !important;
+    border: none !important;
+}
+.btn-daftar:hover { opacity: .88; transform: translateY(-1px); }
 
-/* HERO SECTION - Lebih Colorful */
-.hero-cute {
-    background: linear-gradient(135deg, 
-        var(--pastel-pink) 0%, 
-        var(--pastel-purple) 50%, 
-        var(--pastel-blue) 100%);
-    padding: 80px 0;
-    color: white;
-    text-align: center;
+/* ── HERO ── */
+.hero {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f0f4ff 0%, #fdf4ff 50%, #f0fdf4 100%);
+    padding: 80px 0 60px;
     position: relative;
     overflow: hidden;
 }
-
-/* Decorative elements */
-.hero-cute::before,
-.hero-cute::after {
-    content: '★';
-    position: absolute;
-    font-size: 3rem;
-    color: rgba(255, 255, 255, 0.3);
-    animation: float 3s ease-in-out infinite;
-}
-.hero-cute::before { top: 20px; left: 10%; }
-.hero-cute::after { bottom: 20px; right: 10%; animation-delay: 1.5s; }
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(10deg); }
-}
-
-.hero-cute .title-cute {
-    font-size: 3rem;
-    font-weight: 800;
-    text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-}
-
-.text-gradient {
-    background: linear-gradient(45deg, #fff9c4, #fff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-cute .subtitle-cute {
-    font-size: 1.3rem;
-    margin-bottom: 30px;
-    font-weight: 500;
-}
-
-/* Hero decoration items */
-.hero-cute .hero-decoration {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    z-index: 0;
-}
-.hero-cute .deco-item {
-    position: absolute;
-    font-size: 2.5rem;
-    animation: float 3s infinite ease-in-out;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
-}
-.hero-cute .deco-balloon { top: 10%; left: 15%; animation-delay: 0s; }
-.hero-cute .deco-star { top: 20%; right: 10%; animation-delay: 0.5s; }
-.hero-cute .deco-heart { bottom: 15%; left: 20%; animation-delay: 1s; }
-.hero-cute .deco-ribbon { bottom: 10%; right: 15%; animation-delay: 1.5s; }
-
-/* Button Cute */
-.hero-cute .btn-cute {
-    display: inline-block;
-    padding: 14px 32px;
-    background: linear-gradient(135deg, var(--cute-pink), var(--cute-coral));
-    color: white;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 25px rgba(255, 127, 127, 0.5);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-cute .btn-cute::before {
+.hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
 }
-
-.hero-cute .btn-cute:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(255, 127, 127, 0.6);
-    color: white;
+.hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,92,246,.08) 0%, transparent 70%);
+    bottom: -80px; left: -80px;
+    pointer-events: none;
 }
-
-.hero-cute .btn-cute:hover::before {
-    left: 100%;
-}
-
-/* Bubble Chat Cute */
-.bubble-chat {
+.hero-badge {
     display: inline-flex;
     align-items: center;
+    gap: 6px;
     background: white;
-    border-radius: 25px;
-    padding: 12px 20px;
-    margin-top: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.bubble-chat::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 30px;
-    border: 10px solid transparent;
-    border-bottom-color: white;
-    border-top: none;
-}
-
-.bubble-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 12px;
-    object-fit: cover;
-}
-
-.bubble-text {
-    color: #555;
-    font-size: 0.95rem;
+    border: 1px solid #e0e7ff;
+    color: #6366f1;
+    font-size: .82rem;
     font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(99,102,241,.12);
+}
+.hero-badge span { width: 8px; height: 8px; background: #6366f1; border-radius: 50%; display: inline-block; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero h1 {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #0f172a;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+.hero h1 .highlight {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.hero p.lead {
+    font-size: 1.05rem;
+    color: #64748b;
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 480px;
+}
+.btn-primary-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    transition: all .3s;
+    box-shadow: 0 4px 20px rgba(99,102,241,.35);
+    border: none;
+}
+.btn-primary-custom:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(99,102,241,.45);
+}
+.btn-outline-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid #cbd5e1;
+    color: #475569;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    transition: all .3s;
+    background: white;
+}
+.btn-outline-custom:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    transform: translateY(-2px);
 }
 
 /* Hero Image */
-.hero-image-wrap {
+.hero-img-container {
     position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,.15);
 }
-
-.hero-img {
-    border-radius: 30px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    border: 5px solid white;
-    transform: rotate(-2deg);
-    transition: transform 0.3s ease;
+.hero-img-container img {
+    width: 100%;
+    display: block;
+    border-radius: 24px;
+    transition: transform .5s ease;
 }
-
-.hero-img:hover {
-    transform: rotate(0deg) scale(1.02);
+.hero-img-container:hover img { transform: scale(1.03); }
+.hero-img-badge {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.1);
 }
+.hero-img-badge .icon { font-size: 1.5rem; }
+.hero-img-badge .text strong { display: block; font-size: .85rem; font-weight: 700; color: #0f172a; }
+.hero-img-badge .text span { font-size: .75rem; color: #64748b; }
 
-/* SECTION FITUR */
-.section-fitur {
-    padding: 70px 0;
+/* ── STATS ── */
+.stats-section {
+    padding: 50px 0;
     background: white;
-    margin: 40px 0;
-    border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(255, 133, 162, 0.15);
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
 }
-
-.section-title-cute {
-    font-size: 2.5rem;
+.stat-item { text-align: center; padding: 10px; }
+.stat-item .num {
+    font-size: 2.2rem;
     font-weight: 800;
-    color: #2d3436;
-    margin-bottom: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
 }
+.stat-item .label { font-size: .85rem; color: #64748b; margin-top: 4px; font-weight: 500; }
+.stat-divider { width: 1px; background: #e2e8f0; height: 50px; margin: auto; }
 
-.section-fitur .subtitle-cute {
-    font-size: 1.1rem;
-    color: #636e72;
-    margin-bottom: 20px;
+/* ── PROGRAM ── */
+.section-program {
+    padding: 90px 0;
+    background: #f8fafc;
 }
-
-.divider-cute {
-    width: 150px;
-    height: 8px;
-    background: linear-gradient(90deg, var(--pastel-pink), var(--pastel-purple), var(--pastel-blue), var(--pastel-green));
-    border-radius: 10px;
-    margin: 0 auto 30px;
-    box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);
+.section-label {
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 12px;
 }
+.section-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -.5px;
+    margin-bottom: 14px;
+}
+.section-desc { color: #64748b; font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto; }
 
-/* Fitur Card */
-.fitur-card {
-    background: linear-gradient(145deg, #ffffff, #fff5f7);
-    border: none;
-    border-radius: 25px;
-    padding: 30px 25px;
-    box-shadow: 0 8px 25px rgba(255, 133, 162, 0.15);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.program-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px 28px;
+    height: 100%;
+    border: 1px solid #f1f5f9;
+    transition: all .35s ease;
     position: relative;
     overflow: hidden;
 }
-
-.fitur-card::before {
+.program-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: linear-gradient(90deg, var(--pastel-pink), var(--pastel-purple), var(--pastel-blue));
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 20px 20px 0 0;
+    opacity: 0;
+    transition: opacity .35s;
 }
+.program-card.card-purple::before { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+.program-card.card-pink::before { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.program-card.card-teal::before { background: linear-gradient(90deg, #14b8a6, #06b6d4); }
 
-.fitur-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(255, 133, 162, 0.25);
+.program-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.09);
+    border-color: transparent;
 }
+.program-card:hover::before { opacity: 1; }
 
-.fitur-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 15px;
-    animation: bounce 2s infinite;
+.program-icon {
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
 }
+.icon-purple { background: #ede9fe; }
+.icon-pink   { background: #fce7f3; }
+.icon-teal   { background: #ccfbf1; }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.fitur-title {
-    font-size: 1.4rem;
+.program-card h5 {
+    font-size: 1.15rem;
     font-weight: 700;
-    color: #2d3436;
-    margin-bottom: 12px;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+.program-card p {
+    font-size: .9rem;
+    color: #64748b;
+    line-height: 1.7;
+    margin: 0;
 }
 
-.fitur-desc {
-    font-size: 0.95rem;
-    color: #636e72;
-    line-height: 1.6;
+/* ── CTA ── */
+.cta-section {
+    padding: 90px 0;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
 }
-
-.badge-new {
-    background: linear-gradient(135deg, var(--cute-yellow), var(--pastel-orange));
-    color: #8b6914;
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.7rem;
+.cta-section::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    top: -150px; right: -80px;
+}
+.cta-section::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    bottom: -100px; left: -60px;
+}
+.cta-section h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 14px;
+    position: relative; z-index: 1;
+}
+.cta-section p {
+    color: rgba(255,255,255,.8);
+    font-size: 1rem;
+    margin-bottom: 36px;
+    position: relative; z-index: 1;
+}
+.btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #6366f1;
+    padding: 14px 32px;
+    border-radius: 10px;
     font-weight: 700;
-    margin-left: 8px;
-    animation: pulse 1.5s infinite;
+    text-decoration: none;
+    font-size: .95rem;
+    transition: all .3s;
+    position: relative; z-index: 1;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
 }
+.btn-white:hover { color: #4f46e5; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.2); }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+/* ── FOOTER OVERRIDE ── */
+footer {
+    background: #0f172a !important;
+    color: #94a3b8 !important;
+    padding: 28px 0 !important;
+    margin-top: 0 !important;
+    border-radius: 0 !important;
 }
+footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
 
-/* Responsive */
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-    .hero-cute .title-cute {
-        font-size: 2rem;
-    }
-    
-    .hero-cute {
-        padding: 50px 0;
-    }
-    
-    .bubble-chat {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .bubble-avatar {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-    
-    .section-title-cute {
-        font-size: 1.8rem;
-    }
+    .hero { padding: 60px 0 40px; min-height: auto; }
+    .stat-divider { display: none; }
+    .hero-img-container { margin-top: 40px; }
 }
 </style>
 
-<!-- HERO SECTION -->
-<section class="hero-cute">
-    <div class="hero-decoration">
-        <span class="deco-item deco-balloon">🎈</span>
-        <span class="deco-item deco-star">⭐</span>
-        <span class="deco-item deco-heart">💖</span>
-        <span class="deco-item deco-ribbon">🎀</span>
-    </div>
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h1 class="title-cute">Membentuk Generasi <br><span class="text-gradient">Cerdas & Berakhlak</span> 🌟</h1>
-                <p class="subtitle-cute">Pendidikan usia dini yang dirancang untuk menginspirasi kreativitas dan rasa percaya diri anak.</p>
-                <div class="bubble-chat">
-                    <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/animal-2023924_1280.png" alt="Maskot" class="bubble-avatar">
-                    <div class="bubble-text">Hai, selamat datang di Paud Maessar Bayan! Yuk, belajar sambil bermain! 🥰</div>
+<!-- HERO -->
+<section class="hero">
+    <div class="container" style="position:relative;z-index:1;">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hero-badge">
                 </div>
+                <h1>
+                    <strong>Paud Maessar Bayan</strong>
+                </h1>
+
+                <h1>
+                    Tumbuh Bersama,<br>
+                    <span class="highlight">Belajar dengan Ceria</span>
+                </h1>
+                <p class="lead">
+                    PAUD Maessar Bayan hadir untuk menemani tumbuh kembang anak dengan pendekatan bermain yang menyenangkan, kreatif, dan penuh kasih sayang.
+                </p>
             </div>
-            <div class="col-md-6 text-center mt-4 mt-md-0">
-                <div class="hero-image-wrap">
-                    <img src="barengan.jpeg" class="img-fluid hero-img" alt="Siswa TK">
+            <div class="col-lg-6">
+                <div class="hero-img-container">
+                    <img src="barengan.jpeg" alt="Siswa PAUD Maessar Bayan">
+                    <div class="hero-img-badge">
+                        <span class="icon">🏫</span>
+                        <div class="text">
+                            <strong>PAUD Maessar Bayan</strong>
+                            <span>Terakreditasi C & Terpercaya</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- PROGRAM UNGGULAN -->
-<section class="section-fitur">
-    <div class="container text-center">
-        <h2 class="section-title-cute">Program Unggulan 🌈</h2>
-        <p class="subtitle-cute">Mengembangkan potensi anak secara optimal 🎓</p>
-        <div class="divider-cute"></div>
-        <div class="row g-4 mt-3">
+
+<!-- PROGRAM -->
+<section class="section-program">
+    <div class="container">
+        <div class="text-center mb-5">
+            <p class="section-label">Program Kami</p>
+            <h2 class="section-title">Program Unggulan</h2>
+            <p class="section-desc">Dirancang untuk mengembangkan potensi anak secara menyeluruh — kognitif, fisik, dan emosional.</p>
+        </div>
+        <div class="row g-4">
             <div class="col-md-4">
-                <div class="fitur-card h-100">
-                    <span class="fitur-icon">🎨</span>
-                    <h5 class="fitur-title">Kreatif <span class="badge-new">NEW!</span></h5>
-                    <p class="fitur-desc">Program seni dan musik untuk mengasah imajinasi anak dengan berbagai kegiatan menarik.</p>
+                <div class="program-card card-purple">
+                    <div class="program-icon icon-purple">🎨</div>
+                    <h5>Kreatif & Seni</h5>
+                    <p>Program seni, musik, dan kerajinan tangan untuk mengasah imajinasi dan kreativitas anak sejak dini.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="fitur-card h-100">
-                    <span class="fitur-icon">🧠</span>
-                    <h5 class="fitur-title">Cerdas</h5>
-                    <p class="fitur-desc">Penguatan literasi dan numerasi dengan metode pembelajaran yang menyenangkan dan interaktif.</p>
+                <div class="program-card card-pink">
+                    <div class="program-icon icon-pink">🧠</div>
+                    <h5>Literasi & Numerasi</h5>
+                    <p>Penguatan kemampuan membaca dan berhitung dengan metode bermain yang menyenangkan dan efektif.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="fitur-card h-100">
-                    <span class="fitur-icon">🤸‍♂️</span>
-                    <h5 class="fitur-title">Aktif</h5>
-                    <p class="fitur-desc">Kegiatan olahraga dan permainan yang dirancang untuk meningkatkan kesehatan fisik dan koordinasi anak.</p>
+                <div class="program-card card-teal">
+                    <div class="program-icon icon-teal">🤸</div>
+                    <h5>Gerak & Aktif</h5>
+                    <p>Kegiatan fisik dan motorik yang meningkatkan kesehatan, koordinasi, dan kepercayaan diri anak.</p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Bergabunglah Bersama Kami 🌟</h2>
+        <p>Daftarkan putra-putri Anda dan biarkan kami menemani perjalanan belajar terbaik mereka.</p>
+        <a href="daftar.php" class="btn-white">
+            Daftar Sekarang →
+        </a>
     </div>
 </section>
 
