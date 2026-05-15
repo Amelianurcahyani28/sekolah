@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include 'db.php';
 
 if (isset($_POST['update'])) {
     $judul = $_POST['judul'];

@@ -27,10 +27,6 @@ $_f_email  = !empty($_f_profil['email'])           ? htmlspecialchars($_f_profil
                 </p>
                 <!-- Medsos -->
                 <div style="display:flex;gap:10px;">
-                    <!-- Facebook -->
-                    <a href="#" title="Facebook" target="_blank" style="width:36px;height:36px;border-radius:10px;background:#1e293b;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1877f2'" onmouseout="this.style.background='#1e293b'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                    </a>
                     <!-- Instagram -->
                     <a href="https://www.instagram.com/paudmaessarbayan/" title="Instagram" target="_blank" style="width:36px;height:36px;border-radius:10px;background:#1e293b;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#e1306c'" onmouseout="this.style.background='#1e293b'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -38,10 +34,6 @@ $_f_email  = !empty($_f_profil['email'])           ? htmlspecialchars($_f_profil
                     <!-- TikTok -->
                     <a href="https://www.tiktok.com/@kb.maessar.bayan" title="TikTok" target="_blank" style="width:36px;height:36px;border-radius:10px;background:#1e293b;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#010101'" onmouseout="this.style.background='#1e293b'">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="#94a3b8"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.16 8.16 0 0 0 4.77 1.52V6.82a4.85 4.85 0 0 1-1-.13z"/></svg>
-                    </a>
-                    <!-- WhatsApp -->
-                    <a href="https://wa.me/<?= preg_replace('/[^0-9]/','',$_f_telp) ?>" title="WhatsApp" target="_blank" style="width:36px;height:36px;border-radius:10px;background:#1e293b;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#22c55e'" onmouseout="this.style.background='#1e293b'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#94a3b8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     </a>
                 </div>
             </div>

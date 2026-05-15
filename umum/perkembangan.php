@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<?php include '../admin/koneksi.php'; ?>
+<?php include 'koneksi.php'; ?>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');

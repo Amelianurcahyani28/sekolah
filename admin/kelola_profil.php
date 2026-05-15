@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include 'db.php';
 
 // Pastikan kolom ada
 $checks = ['kepsek_foto','foto_sekolah','tentang','foto_hero'];

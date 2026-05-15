@@ -2,17 +2,17 @@
 session_start();
 
 if (!isset($_SESSION['login'])) {
-    header("Location: ../umum/login.php");
+    header("Location: login.php");
     exit;
 }
 
-include 'koneksi.php';
+include 'db.php';
 
 $keyword = isset($_GET['cari']) ? mysqli_real_escape_string($conn, $_GET['cari']) : '';
 
 $query = "SELECT * FROM siswa";
 if (!empty($keyword)) {
-    $query .= " WHERE nama_anak LIKE '%$keyword%' OR nama_ortu LIKE '%$keyword%' OR nama_ayah LIKE '%$keyword%' OR nama_ibu LIKE '%$keyword%'";
+    $query .= " WHERE nama_anak LIKE '%$keyword%' OR nama_ayah LIKE '%$keyword%' OR nama_ibu LIKE '%$keyword%'";
 }
 $query .= " ORDER BY tanggal_daftar DESC";
 
@@ -50,7 +50,7 @@ if (isset($_GET['hapus'])) {
             <a href="admin.php" class="nav-link text-white mb-2">Dashboard</a>
             <a href="datasiswa.php" class="nav-link text-white bg-white bg-opacity-25 rounded mb-2">Data Siswa</a>
             <a href="artikel.php" class="nav-link text-white mb-2">Kelola Artikel</a>
-            <a href="../umum/index.php" class="nav-link text-white mt-5 small">← Kembali ke Web</a>
+            <a href="../index.php" class="nav-link text-white mt-5 small">← Kembali ke Web</a>
         </div>
 
     <div class="content text-dark">

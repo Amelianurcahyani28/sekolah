@@ -161,7 +161,7 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
         </a>
     </nav>
     <div class="sidebar-footer">
-        <a href="../umum/index.php" class="sidebar-link" target="_blank">
+        <a href="../index.php" class="sidebar-link" target="_blank">
             <i class="fas fa-external-link-alt"></i> Lihat Website
         </a>
         <a href="logout.php" class="sidebar-link" style="color:#f87171;">

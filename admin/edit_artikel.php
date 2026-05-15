@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['login'])) { header("Location: ../umum/login.php"); exit; }
-include '../umum/koneksi.php';
+if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
+include 'db.php';
 
 $id     = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $result = mysqli_query($conn, "SELECT * FROM artikel WHERE id=$id");

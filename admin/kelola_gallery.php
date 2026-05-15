@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include 'db.php';
 
 if (isset($_POST['tambah'])) {
     $judul     = mysqli_real_escape_string($conn, $_POST['judul']);

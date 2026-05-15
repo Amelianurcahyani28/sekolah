@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<?php include '../admin/koneksi.php'; ?>
+<?php include 'koneksi.php'; ?>
 <?php
 $query = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
 $profil = mysqli_fetch_assoc($query);

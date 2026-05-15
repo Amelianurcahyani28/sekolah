@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<?php include '../admin/koneksi.php'; ?>
+<?php include 'koneksi.php'; ?>
 <?php
 $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY tanggal DESC");
 ?>

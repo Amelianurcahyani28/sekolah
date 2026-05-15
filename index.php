@@ -1,4 +1,7 @@
-<?php include 'header.php'; ?>
+<?php 
+$is_root = true;
+include 'umum/header.php'; 
+?>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -25,6 +28,12 @@ body {
     font-family: 'Inter', sans-serif !important;
     font-weight: 800 !important;
     font-size: 1.3rem !important;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.brand-text {
     background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
@@ -369,7 +378,7 @@ footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
             </div>
             <div class="col-lg-6">
                 <div class="hero-img-container">
-                    <img src="umum/barengan.jpeg" alt="Siswa PAUD Maessar Bayan">
+                    <img src="umum/foto/foto_bersama.jpeg" alt="Siswa PAUD Maessar Bayan">
                     <div class="hero-img-badge">
                         <span class="icon">🏫</span>
                         <div class="text">

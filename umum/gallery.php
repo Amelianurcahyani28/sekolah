@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<?php include '../admin/koneksi.php'; ?>
+<?php include '../admin/db.php'; ?>
 <?php
 $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
 ?>

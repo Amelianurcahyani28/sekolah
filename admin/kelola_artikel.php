@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include 'db.php';
 
 $checkColumn = mysqli_query($conn, "SHOW COLUMNS FROM artikel LIKE 'gambar'");
 if (!$checkColumn || mysqli_num_rows($checkColumn) === 0) {
