@@ -19,29 +19,7 @@ body { font-family:'Inter',sans-serif; background:#f8fafc; color:#1e293b; }
 
 .daftar-section { padding:60px 0; }
 
-/* Info Cards Kiri */
-.info-box {
-    background:white; border-radius:18px;
-    border:1px solid #f1f5f9; padding:28px;
-    margin-bottom:20px;
-}
-.info-box h5 { font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-.info-box ul { list-style:none; padding:0; margin:0; }
-.info-box ul li {
-    padding:8px 0; border-bottom:1px solid #f1f5f9;
-    font-size:.88rem; color:#475569;
-    display:flex; align-items:center; gap:8px;
-}
-.info-box ul li:last-child { border:none; }
-.info-box ul li::before { content:'✓'; color:#6366f1; font-weight:700; }
 
-.biaya-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:.9rem; }
-.biaya-row:last-child { border:none; }
-.biaya-row strong { color:#0f172a; font-weight:700; }
-
-.kontak-item { margin-bottom:14px; font-size:.88rem; }
-.kontak-item strong { display:block; color:#0f172a; margin-bottom:2px; font-weight:600; }
-.kontak-item span { color:#64748b; }
 
 /* Form Card */
 .form-card { background:white; border-radius:18px; border:1px solid #f1f5f9; padding:36px; }
@@ -83,28 +61,8 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
     <div class="container">
         <div class="row g-4">
 
-            <!-- Kiri: Info -->
-            <div class="col-lg-4">
-                <!-- Syarat -->
-                <div class="info-box">
-                    <h5>📝 Syarat Pendaftaran</h5>
-                    <ul>
-                        <li>Usia minimal 4 tahun (TK A)</li>
-                        <li>Fotokopi Akta Kelahiran</li>
-                        <li>Fotokopi KK & KTP Orang Tua</li>
-                        <li>Pas Foto 3x4 (2 lembar)</li>
-                    </ul>
-                </div>
-                <!-- Biaya -->
-                <div class="info-box">
-                    <h5>💰 Biaya Pendidikan</h5>
-                    <div class="biaya-row"><span>Uang Pangkal</span><strong>Rp 3.000.000</strong></div>
-                    <div class="biaya-row"><span>SPP Bulanan</span><strong>Rp 350.000</strong></div>
-                </div>
-            </div>
-
-            <!-- Kanan: Form -->
-            <div class="col-lg-8">
+            <!-- Form Pendaftaran (Tengah) -->
+            <div class="col-lg-8 offset-lg-2">
                 <div class="form-card">
                     <h4>Data Pendaftaran</h4>
                     <p class="sub">Isi formulir berikut dengan lengkap dan benar</p>
