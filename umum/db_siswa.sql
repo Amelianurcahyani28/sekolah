@@ -6,6 +6,7 @@
 -- DROP TABLE IF EXISTS perkembangan_anak;
 -- DROP TABLE IF EXISTS profil;
 -- DROP TABLE IF EXISTS beranda;
+-- DROP TABLE IF EXISTS admin;
 
 -- Table Siswa
 CREATE TABLE IF NOT EXISTS siswa (
@@ -71,6 +72,15 @@ CREATE TABLE IF NOT EXISTS beranda (
     deskripsi TEXT DEFAULT NULL
 );
 
+-- Table Admin
+CREATE TABLE IF NOT EXISTS admin (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nama_lengkap VARCHAR(100) DEFAULT NULL,
+    last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Insert sample data
 INSERT INTO beranda (judul, deskripsi) VALUES ('TK Maessar Bayan', 'Pendidikan usia dini yang menyenangkan untuk anak-anak');
 INSERT INTO profil (tentang, visi, misi, kepsek_nama, kepsek_quote, alamat_sekolah, no_telp, email) VALUES 
@@ -82,3 +92,6 @@ INSERT INTO profil (tentang, visi, misi, kepsek_nama, kepsek_quote, alamat_sekol
 'Jl. Maessar Bayan, Lombok Utara, NTB',
 '(0370) 123456',
 'info@maessarbayan.sch.id');
+
+-- Insert default admin
+INSERT INTO admin (username, password, nama_lengkap) VALUES ('maessarbayan', '298', 'Administrator PAUD');

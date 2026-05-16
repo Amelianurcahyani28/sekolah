@@ -178,8 +178,8 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
             <div class="topbar-sub">PAUD Maessar Bayan · Panel Admin</div>
         </div>
         <div class="topbar-user">
-            <div class="user-avatar">A</div>
-            Admin
+            <div class="user-avatar"><?= substr($_SESSION['admin_nama'] ?? 'A', 0, 1) ?></div>
+            <?= $_SESSION['admin_nama'] ?? 'Admin' ?>
         </div>
     </div>
     <div class="main-content">
