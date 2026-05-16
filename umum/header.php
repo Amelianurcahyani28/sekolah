@@ -64,15 +64,16 @@ $base_path = (isset($is_root) && $is_root) ? 'umum/' : '';
 $home_path = (isset($is_root) && $is_root) ? 'index.php' : '../index.php';
 $admin_path = (isset($is_root) && $is_root) ? 'admin/login.php' : '../admin/login.php';
 ?>
-<nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
     <div class="container">
         <a class="navbar-brand" href="<?= $home_path ?>">
             <img src="<?= $base_path ?>foto/logo.jpeg" alt="Logo" width="32" height="32" style="border-radius: 6px; object-fit: contain;">
             <span class="brand-text">Maessar Bayan</span>
         </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center gap-1">
                 <li class="nav-item"><a class="nav-link" href="<?= $home_path ?>">Home</a></li>

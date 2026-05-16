@@ -79,7 +79,7 @@ if (isset($_POST['update'])) {
                         <option value="edukasi" <?= $data['kategori']=='edukasi'?'selected':'' ?>>📚 Edukasi</option>
                         <option value="parenting" <?= $data['kategori']=='parenting'?'selected':'' ?>>👨‍👩‍👧 Parenting</option>
                         <option value="kesehatan" <?= $data['kategori']=='kesehatan'?'selected':'' ?>>💪 Kesehatan</option>
-                        <option value="kegitan" <?= $data['kategori']=='kegitan'?'selected':'' ?>>🎉 Kegiatan</option>
+                        <option value="kegiatan" <?= $data['kategori']=='kegiatan'?'selected':'' ?>>🎉 Kegiatan</option>
                     </select>
                 </div>
             </div>

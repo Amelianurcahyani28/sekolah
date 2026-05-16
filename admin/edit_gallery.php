@@ -21,7 +21,7 @@ if (isset($_POST['update'])) {
             $gambar = $fn;
         }
     }
-    if (mysqli_query($conn, "UPDATE gallery SET judul='$judul',keterangan='$deskripsi',gambar='$gambar' WHERE id=$id")) {
+    if (mysqli_query($conn, "UPDATE gallery SET judul='$judul',deskripsi='$deskripsi',gambar='$gambar' WHERE id=$id")) {
         echo "<script>alert('Berhasil diupdate!');window.location='admin.php?page=gallery';</script>"; exit;
     }
 }
@@ -70,7 +70,7 @@ if (isset($_POST['update'])) {
         </div>
         <div class="mb3">
             <label class="form-label">Keterangan</label>
-            <input type="text" name="deskripsi" class="form-control" value="<?= htmlspecialchars($data['keterangan']) ?>" required>
+            <input type="text" name="deskripsi" class="form-control" value="<?= htmlspecialchars($data['deskripsi']) ?>" required>
         </div>
         <div class="mb3">
             <label class="form-label">Ganti Foto (Opsional)</label>

@@ -1,10 +1,8 @@
 <?php
 include 'db.php';
 
-$checkColumn = mysqli_query($conn, "SHOW COLUMNS FROM artikel LIKE 'gambar'");
-if (!$checkColumn || mysqli_num_rows($checkColumn) === 0) {
-    mysqli_query($conn, "ALTER TABLE artikel ADD gambar VARCHAR(200) DEFAULT NULL");
-}
+// Column checks moved to SQL file
+
 
 if (isset($_POST['tambah'])) {
     $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
@@ -80,7 +78,7 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
                     <option value="edukasi">📚 Edukasi</option>
                     <option value="parenting">👨‍👩‍👧 Parenting</option>
                     <option value="kesehatan">💪 Kesehatan</option>
-                    <option value="kegitan">🎉 Kegiatan</option>
+                    <option value="kegiatan">🎉 Kegiatan</option>
                 </select>
             </div>
         </div>
@@ -111,7 +109,7 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
                     if ($kat==='edukasi') $bc='kat-edukasi';
                     elseif ($kat==='parenting') $bc='kat-parenting';
                     elseif ($kat==='kesehatan') $bc='kat-kesehatan';
-                    elseif ($kat==='kegitan'||$kat==='kegiatan') $bc='kat-kegiatan';
+                    elseif ($kat==='kegiatan') $bc='kat-kegiatan';
                 ?>
                 <tr>
                     <td><?= $no++ ?></td>

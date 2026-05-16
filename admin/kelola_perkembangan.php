@@ -1,14 +1,8 @@
 <?php
 include 'db.php';
 
-// Auto-create table if not exists
-mysqli_query($conn, "CREATE TABLE IF NOT EXISTS perkembangan_anak (
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nama_anak VARCHAR(100) NOT NULL,
-    prestasi TEXT DEFAULT NULL,
-    foto VARCHAR(200) DEFAULT NULL,
-    tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)");
+// Table creation moved to SQL file
+
 
 // Handle Upload & Insert
 if (isset($_POST['tambah'])) {

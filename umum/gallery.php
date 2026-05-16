@@ -1,8 +1,9 @@
 <?php include 'header.php'; ?>
-<?php include '../admin/db.php'; ?>
+<?php include 'koneksi.php'; ?>
 <?php
 $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
 ?>
+
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -69,7 +70,7 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
                         <?php endif; ?>
                         <div class="gallery-caption">
                             <h5><?= htmlspecialchars($row['judul']) ?></h5>
-                            <p><?= htmlspecialchars($row['keterangan']) ?></p>
+                            <p><?= htmlspecialchars($row['deskripsi']) ?></p>
                         </div>
                     </div>
                 </div>

@@ -78,7 +78,7 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
                     if ($kat === 'edukasi')   { $badgeClass='badge-edukasi';   $label='📚 Edukasi'; }
                     elseif ($kat === 'parenting') { $badgeClass='badge-parenting'; $label='👨‍👩‍👧 Parenting'; }
                     elseif ($kat === 'kesehatan') { $badgeClass='badge-kesehatan'; $label='💪 Kesehatan'; }
-                    elseif ($kat === 'kegiatan' || $kat === 'kegitan') { $badgeClass='badge-kegiatan'; $label='🎉 Kegiatan'; }
+                    elseif ($kat === 'kegiatan') { $badgeClass='badge-kegiatan'; $label='🎉 Kegiatan'; }
                     $excerpt = strip_tags($row['isi']);
                     if (strlen($excerpt) > 200) $excerpt = substr($excerpt, 0, 200) . '...';
                 ?>

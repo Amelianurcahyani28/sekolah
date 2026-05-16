@@ -10,7 +10,7 @@ if (isset($_POST['tambah'])) {
         $file_name   = time() . '_' . basename($_FILES['gambar']['name']);
         $target_file = $target_dir . $file_name;
         if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
-            mysqli_query($conn, "INSERT INTO gallery (judul, keterangan, gambar) VALUES ('$judul', '$deskripsi', '$file_name')");
+            mysqli_query($conn, "INSERT INTO gallery (judul, deskripsi, gambar) VALUES ('$judul', '$deskripsi', '$file_name')");
             header("Location: ?page=gallery&status=success"); exit;
         } else {
             header("Location: ?page=gallery&status=failed"); exit;
@@ -102,7 +102,7 @@ $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
                     <td><?= $no++ ?></td>
                     <td><?php if($row['gambar']): ?><img src="../umum/foto/<?= htmlspecialchars($row['gambar']) ?>" class="thumb"><?php else: ?>-<?php endif; ?></td>
                     <td><strong><?= htmlspecialchars($row['judul']) ?></strong></td>
-                    <td><?= htmlspecialchars($row['keterangan']) ?></td>
+                    <td><?= htmlspecialchars($row['deskripsi']) ?></td>
                     <td style="display:flex;gap:6px;">
                         <a href="edit_gallery.php?id=<?= $row['id'] ?>" class="btn-edit"><i class="fas fa-edit"></i> Edit</a>
                         <a href="?page=gallery&hapus=<?= $row['id'] ?>" class="btn-del" onclick="return confirm('Hapus foto ini?')"><i class="fas fa-trash"></i> Hapus</a>

@@ -1,13 +1,8 @@
 <?php
 include 'db.php';
 
-// Pastikan kolom ada
-$checks = ['kepsek_foto','foto_sekolah','tentang','foto_hero'];
-foreach ($checks as $col) {
-    $r = mysqli_query($conn, "SHOW COLUMNS FROM profil LIKE '$col'");
-    if ($r && mysqli_num_rows($r) === 0)
-        mysqli_query($conn, "ALTER TABLE profil ADD $col VARCHAR(255) DEFAULT NULL");
-}
+// Column checks moved to SQL file
+
 
 $cek  = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
 $data = $cek ? mysqli_fetch_assoc($cek) : null;

@@ -2,16 +2,18 @@
 include 'header.php';
 include 'koneksi.php';
 
-$data = mysqli_query($conn, "SELECT tentang, visi, misi, kepsek_nama, kepsek_quote, kepsek_foto, foto_sekolah, foto_hero FROM profil LIMIT 1");
-$row = $data ? mysqli_fetch_assoc($data) : null;
+$data = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+$row = ($data && mysqli_num_rows($data) > 0) ? mysqli_fetch_assoc($data) : null;
 
-$tentang     = $row['tentang']      ?? 'TK Maessar Bayan adalah lembaga pendidikan anak usia dini yang berfokus pada perkembangan karakter dan potensi anak. Kami menyediakan lingkungan belajar yang aman, nyaman, dan menyenangkan untuk buah hati Anda.';
-$visi        = $row['visi']         ?? 'Menjadi lembaga pendidikan anak usia dini yang unggul, berkarakter, dan berlandaskan nilai-nilai islami.';
-$misi        = $row['misi']         ?? 'Menyelenggarakan pembelajaran yang menyenangkan dan inovatif untuk mengoptimalkan tumbuh kembang anak.';
-$kepsek_nama = $row['kepsek_nama']  ?? 'Hj. Siti Aisyah, S.Pd';
-$kepsek_quote= $row['kepsek_quote'] ?? 'Pendidikan adalah tiket masa depan bagi mereka yang menyiapkannya hari ini.';
-$kepsek_foto = !empty($row['kepsek_foto']) ? 'foto/' . $row['kepsek_foto'] : 'kepsek.jpeg';
-$foto_hero   = !empty($row['foto_hero'])   ? 'foto/' . $row['foto_hero']   : '';
+$tentang      = $row['tentang']      ?? 'TK Maessar Bayan adalah lembaga pendidikan anak usia dini yang berfokus pada perkembangan karakter dan potensi anak.';
+$visi         = $row['visi']         ?? 'Menjadi lembaga pendidikan anak usia dini yang unggul, berkarakter, dan berlandaskan nilai-nilai islami.';
+$misi         = $row['misi']         ?? 'Menyelenggarakan pembelajaran yang menyenangkan dan inovatif untuk mengoptimalkan tumbuh kembang anak.';
+$kepsek_nama  = $row['kepsek_nama']  ?? 'Hj. Siti Aisyah, S.Pd';
+$kepsek_quote = $row['kepsek_quote'] ?? 'Pendidikan adalah tiket masa depan bagi mereka yang menyiapkannya hari ini.';
+
+$kepsek_foto  = !empty($row['kepsek_foto']) ? 'foto/' . $row['kepsek_foto'] : 'foto/logo.jpeg'; 
+$foto_hero    = !empty($row['foto_hero']) ? 'foto/' . $row['foto_hero'] : '';
+
 
 $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 ?>
