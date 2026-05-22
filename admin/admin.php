@@ -5,8 +5,10 @@ if (!isset($_SESSION['login'])) {
     header("Location: ../admin/login.php");
     exit;
 }
+include_once 'db.php';
+$conn_ok = isset($conn) && $conn;
 $page = $_GET['page'] ?? 'beranda';
-$allowedPages = ['beranda','profil','gallery','artikel','siswa','perkembangan'];
+$allowedPages = ['beranda','home','profil','gallery','artikel','siswa','perkembangan'];
 if (!in_array($page, $allowedPages, true)) $page = 'beranda';
 ?>
 <!DOCTYPE html>
@@ -27,6 +29,7 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
             width:240px; min-height:100vh; position:fixed; top:0; left:0;
             background:#0f172a; display:flex; flex-direction:column;
             z-index:100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .sidebar-brand {
             padding:24px 20px 20px;
@@ -122,7 +125,20 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
 
         @media(max-width:768px){
             .sidebar { transform:translateX(-100%); }
+            .sidebar.active-mobile { transform:translateX(0) !important; }
             .main-wrapper { margin-left:0; }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(15, 23, 42, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 90;
+                transition: opacity 0.3s ease;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -143,6 +159,9 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
         <div class="nav-section-label">Menu</div>
         <a href="?page=beranda" class="sidebar-link <?= $page=='beranda'?'active':'' ?>">
             <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="?page=home" class="sidebar-link <?= $page=='home'?'active':'' ?>">
+            <i class="fas fa-desktop"></i> Kelola Home
         </a>
         <a href="?page=profil" class="sidebar-link <?= $page=='profil'?'active':'' ?>">
             <i class="fas fa-user-circle"></i> Kelola Profil
@@ -170,22 +189,39 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
     </div>
 </aside>
 
+<!-- Sidebar Overlay -->
+<div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 <!-- Main -->
 <div class="main-wrapper">
     <div class="topbar">
-        <div>
-            <div class="topbar-title"><?= ucfirst($page) ?></div>
-            <div class="topbar-sub">PAUD Maessar Bayan · Panel Admin</div>
+        <div class="d-flex align-items-center">
+            <button class="btn btn-outline-secondary border-0 d-md-none me-3" id="btn-sidebar-toggle" style="padding: 6px 10px; border-radius: 8px;">
+                <i class="fas fa-bars" style="font-size: 1.1rem; color: #475569;"></i>
+            </button>
+            <div>
+                <div class="topbar-title"><?= ucfirst($page) ?></div>
+                <div class="topbar-sub">PAUD Maessar Bayan · Panel Admin</div>
+            </div>
         </div>
         <div class="topbar-user">
             <div class="user-avatar"><?= substr($_SESSION['admin_nama'] ?? 'A', 0, 1) ?></div>
-            <?= $_SESSION['admin_nama'] ?? 'Admin' ?>
+            <span class="d-none d-sm-inline"><?= $_SESSION['admin_nama'] ?? 'Admin' ?></span>
         </div>
     </div>
     <div class="main-content">
+        <?php if (!$conn_ok): ?>
+        <div class="alert alert-warning border-0 shadow-sm mb-4 d-flex align-items-center gap-3" style="border-radius: 12px; background: #fffbeb; color: #b45309; padding: 16px 20px; font-size: 0.9rem;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 1.3rem;"></i>
+            <div>
+                <strong>Koneksi Database Bermasalah:</strong> Panel admin saat ini tidak dapat terhubung ke database. Silakan periksa kembali konfigurasi database Anda di file <code>admin/db.php</code>. Halaman tetap dapat dimuat menggunakan data default agar Anda tidak terkunci.
+            </div>
+        </div>
+        <?php endif; ?>
         <?php
         switch($page) {
             case 'beranda': include 'kelola_beranda.php'; break;
+            case 'home':    include 'kelola_home.php';    break;
             case 'profil':  include 'kelola_profil.php';  break;
             case 'gallery': include 'kelola_gallery.php'; break;
             case 'artikel': include 'kelola_artikel.php'; break;
@@ -198,5 +234,33 @@ if (!in_array($page, $allowedPages, true)) $page = 'beranda';
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('btn-sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (toggleBtn && sidebar && overlay) {
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active-mobile');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active-mobile');
+            overlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking any link on mobile
+        const sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                sidebar.classList.remove('active-mobile');
+                overlay.classList.remove('active');
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>

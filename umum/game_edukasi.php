@@ -393,6 +393,20 @@ function endGame(type, won) {
 
 function resetGame(type) {
     activeGame = type;
+    
+    // Manual tab switching to ensure compatibility on hosting
+    document.querySelectorAll('.tab-pane').forEach(el => {
+        el.classList.remove('show', 'active');
+    });
+    document.querySelectorAll('.nav-link').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    const targetPane = document.getElementById('pills-' + type);
+    const targetTab = document.getElementById('pills-' + type + '-tab');
+    if (targetPane) targetPane.classList.add('show', 'active');
+    if (targetTab) targetTab.classList.add('active');
+
     if (type === 'memory') initMemory();
     else if (type === 'color') initColor();
     else if (type === 'count') initCount();

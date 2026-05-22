@@ -1,7 +1,7 @@
 <?php include 'header.php'; ?>
 <?php include 'koneksi.php'; ?>
 <?php
-$data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY tanggal DESC");
+$data = $conn ? mysqli_query($conn, "SELECT * FROM artikel ORDER BY tanggal DESC") : false;
 ?>
 
 <style>
@@ -69,8 +69,13 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
 <!-- Artikel -->
 <section class="artikel-section">
     <div class="container">
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning text-center border-0 shadow-sm mb-4" style="border-radius: 12px; background: #fffbeb; color: #b45309; font-size: 0.9rem; padding: 12px 20px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa konfigurasi database Anda di hosting. Halaman tetap dapat diakses dengan data default.
+        </div>
+        <?php endif; ?>
         <div class="row g-4">
-            <?php if(mysqli_num_rows($data) > 0): ?>
+            <?php if($data && mysqli_num_rows($data) > 0): ?>
                 <?php while($row = mysqli_fetch_assoc($data)):
                     $kat = $row['kategori'];
                     $badgeClass = 'badge-default';

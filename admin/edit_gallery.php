@@ -3,27 +3,34 @@ session_start();
 if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
 include 'db.php';
 
-$id     = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$result = mysqli_query($conn, "SELECT * FROM gallery WHERE id=$id");
-$data   = mysqli_fetch_assoc($result);
-if (!$data) { echo "<script>alert('Data tidak ditemukan!');window.location='admin.php?page=gallery';</script>"; exit; }
+$id   = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$data = null;
 
-if (isset($_POST['update'])) {
-    $judul     = mysqli_real_escape_string($conn, $_POST['judul']);
-    $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    $gambar    = $data['gambar'];
-    if (!empty($_FILES['gambar']['name'])) {
-        $td = "../umum/foto/";
-        if (!is_dir($td)) mkdir($td, 0777, true);
-        $fn = time() . '_' . basename($_FILES['gambar']['name']);
-        if (move_uploaded_file($_FILES['gambar']['tmp_name'], $td.$fn)) {
-            if ($gambar && file_exists($td.$gambar)) @unlink($td.$gambar);
-            $gambar = $fn;
+if ($conn) {
+    $result = mysqli_query($conn, "SELECT * FROM gallery WHERE id=$id");
+    $data   = $result ? mysqli_fetch_assoc($result) : null;
+    
+    if (isset($_POST['update'])) {
+        $judul     = mysqli_real_escape_string($conn, $_POST['judul']);
+        $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
+        $gambar    = $data['gambar'] ?? '';
+        if (!empty($_FILES['gambar']['name'])) {
+            $td = "../umum/foto/";
+            if (!is_dir($td)) mkdir($td, 0777, true);
+            $fn = time() . '_' . basename($_FILES['gambar']['name']);
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $td.$fn)) {
+                if ($gambar && file_exists($td.$gambar)) @unlink($td.$gambar);
+                $gambar = $fn;
+            }
+        }
+        if (mysqli_query($conn, "UPDATE gallery SET judul='$judul',deskripsi='$deskripsi',gambar='$gambar' WHERE id=$id")) {
+            echo "<script>alert('Berhasil diupdate!');window.location='admin.php?page=gallery';</script>"; exit;
         }
     }
-    if (mysqli_query($conn, "UPDATE gallery SET judul='$judul',deskripsi='$deskripsi',gambar='$gambar' WHERE id=$id")) {
-        echo "<script>alert('Berhasil diupdate!');window.location='admin.php?page=gallery';</script>"; exit;
-    }
+}
+
+if (!$data) {
+    $data = ['judul'=>'','deskripsi'=>'','gambar'=>''];
 }
 ?>
 <!DOCTYPE html>
@@ -64,6 +71,11 @@ if (isset($_POST['update'])) {
     </div>
     <form method="POST" enctype="multipart/form-data">
     <div class="edit-body">
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning border-0 mb-3" style="border-radius: 10px; background: #fffbeb; color: #b45309; font-size: 0.85rem; padding: 12px 16px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa kembali konfigurasi database Anda di hosting. Penyimpanan dinonaktifkan saat offline.
+        </div>
+        <?php endif; ?>
         <div class="mb3">
             <label class="form-label">Judul Foto</label>
             <input type="text" name="judul" class="form-control" value="<?= htmlspecialchars($data['judul']) ?>" required>
@@ -83,7 +95,7 @@ if (isset($_POST['update'])) {
     </div>
     <div class="edit-foot">
         <a href="admin.php?page=gallery" class="btn-cancel">Batal</a>
-        <button type="submit" name="update" class="btn-save">💾 Simpan Perubahan</button>
+        <button type="submit" name="update" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>💾 Simpan Perubahan</button>
     </div>
     </form>
 </div>

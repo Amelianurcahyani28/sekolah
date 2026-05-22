@@ -1,25 +1,17 @@
 <?php
 include 'db.php';
 
-if (isset($_POST['update'])) {
-    $judul = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
-    $cek = mysqli_query($conn, "SELECT * FROM beranda LIMIT 1");
-    if (mysqli_num_rows($cek) > 0) {
-        mysqli_query($conn, "UPDATE beranda SET judul='$judul', deskripsi='$deskripsi' WHERE id=1");
-    } else {
-        mysqli_query($conn, "INSERT INTO beranda VALUES('', '$judul', '$deskripsi')");
-    }
-    echo "<script>alert('Berhasil diperbarui!');</script>";
+$gallery_total = 0;
+$artikel_total = 0;
+$siswa_total   = 0;
+$perkembangan_total = 0;
+
+if ($conn) {
+    $gallery_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM gallery"))['total'] ?? 0;
+    $artikel_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM artikel"))['total'] ?? 0;
+    $siswa_total   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa"))['total'] ?? 0;
+    $perkembangan_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM perkembangan_anak"))['total'] ?? 0;
 }
-
-$data = mysqli_query($conn, "SELECT * FROM beranda ORDER BY id DESC");
-$row = mysqli_fetch_assoc($data) ?? ['judul' => 'TK Maessar Bayan', 'deskripsi' => 'Pendidikan usia dini yang menyenangkan'];
-
-$gallery_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM gallery"))['total'];
-$artikel_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM artikel"))['total'];
-$siswa_total   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM siswa"))['total'];
-$perkembangan_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM perkembangan_anak"))['total'];
 ?>
 
 <style>
@@ -100,3 +92,5 @@ $perkembangan_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as
         <div class="s-lbl">Artikel</div>
     </a>
 </div>
+
+

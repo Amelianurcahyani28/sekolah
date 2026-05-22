@@ -1,72 +1,73 @@
 <?php
 include 'db.php';
 
-// Table creation moved to SQL file
+$editData = null;
+if ($conn) {
+    // Handle Upload & Insert
+    if (isset($_POST['tambah'])) {
+        $nama     = mysqli_real_escape_string($conn, $_POST['nama_anak']);
+        $prestasi = mysqli_real_escape_string($conn, $_POST['prestasi']);
+        
+        $foto = "";
+        if ($_FILES['foto']['name'] != "") {
+            $foto = time() . "_" . $_FILES['foto']['name'];
+            move_uploaded_file($_FILES['foto']['tmp_name'], "../umum/foto/" . $foto);
+        }
 
-
-// Handle Upload & Insert
-if (isset($_POST['tambah'])) {
-    $nama     = mysqli_real_escape_string($conn, $_POST['nama_anak']);
-    $prestasi = mysqli_real_escape_string($conn, $_POST['prestasi']);
-    
-    $foto = "";
-    if ($_FILES['foto']['name'] != "") {
-        $foto = time() . "_" . $_FILES['foto']['name'];
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../umum/foto/" . $foto);
+        if (mysqli_query($conn, "INSERT INTO perkembangan_anak (nama_anak, prestasi, foto) VALUES ('$nama', '$prestasi', '$foto')")) {
+            echo "<script>alert('Data perkembangan berhasil ditambahkan!'); window.location='admin.php?page=perkembangan';</script>";
+            exit;
+        }
     }
 
-    if (mysqli_query($conn, "INSERT INTO perkembangan_anak (nama_anak, prestasi, foto) VALUES ('$nama', '$prestasi', '$foto')")) {
-        echo "<script>alert('Data perkembangan berhasil ditambahkan!'); window.location='admin.php?page=perkembangan';</script>";
-        exit;
-    }
-}
-
-// Handle Update
-if (isset($_POST['update'])) {
-    $id       = (int)$_POST['id'];
-    $nama     = mysqli_real_escape_string($conn, $_POST['nama_anak']);
-    $prestasi = mysqli_real_escape_string($conn, $_POST['prestasi']);
-    
-    if ($_FILES['foto']['name'] != "") {
-        // Delete old photo
-        $cek = mysqli_query($conn, "SELECT foto FROM perkembangan_anak WHERE id=$id");
-        $row = mysqli_fetch_assoc($cek);
-        if ($row['foto'] != "" && file_exists("../umum/foto/" . $row['foto'])) {
-            unlink("../umum/foto/" . $row['foto']);
+    // Handle Update
+    if (isset($_POST['update'])) {
+        $id       = (int)$_POST['id'];
+        $nama     = mysqli_real_escape_string($conn, $_POST['nama_anak']);
+        $prestasi = mysqli_real_escape_string($conn, $_POST['prestasi']);
+        
+        if ($_FILES['foto']['name'] != "") {
+            // Delete old photo
+            $cek = mysqli_query($conn, "SELECT foto FROM perkembangan_anak WHERE id=$id");
+            $row = $cek ? mysqli_fetch_assoc($cek) : null;
+            if ($row && $row['foto'] != "" && file_exists("../umum/foto/" . $row['foto'])) {
+                unlink("../umum/foto/" . $row['foto']);
+            }
+            
+            $foto = time() . "_" . $_FILES['foto']['name'];
+            move_uploaded_file($_FILES['foto']['tmp_name'], "../umum/foto/" . $foto);
+            mysqli_query($conn, "UPDATE perkembangan_anak SET nama_anak='$nama', prestasi='$prestasi', foto='$foto' WHERE id=$id");
+        } else {
+            mysqli_query($conn, "UPDATE perkembangan_anak SET nama_anak='$nama', prestasi='$prestasi' WHERE id=$id");
         }
         
-        $foto = time() . "_" . $_FILES['foto']['name'];
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../umum/foto/" . $foto);
-        mysqli_query($conn, "UPDATE perkembangan_anak SET nama_anak='$nama', prestasi='$prestasi', foto='$foto' WHERE id=$id");
-    } else {
-        mysqli_query($conn, "UPDATE perkembangan_anak SET nama_anak='$nama', prestasi='$prestasi' WHERE id=$id");
+        echo "<script>alert('Data perkembangan berhasil diperbarui!'); window.location='admin.php?page=perkembangan';</script>";
+        exit;
     }
-    
-    echo "<script>alert('Data perkembangan berhasil diperbarui!'); window.location='admin.php?page=perkembangan';</script>";
-    exit;
-}
 
-// Handle Delete
-if (isset($_GET['hapus'])) {
-    $id = (int)$_GET['hapus'];
-    $cek = mysqli_query($conn, "SELECT foto FROM perkembangan_anak WHERE id=$id");
-    $row = mysqli_fetch_assoc($cek);
-    if ($row['foto'] != "" && file_exists("../umum/foto/" . $row['foto'])) {
-        unlink("../umum/foto/" . $row['foto']);
+    // Handle Delete
+    if (isset($_GET['hapus'])) {
+        $id = (int)$_GET['hapus'];
+        $cek = mysqli_query($conn, "SELECT foto FROM perkembangan_anak WHERE id=$id");
+        $row = $cek ? mysqli_fetch_assoc($cek) : null;
+        if ($row && $row['foto'] != "" && file_exists("../umum/foto/" . $row['foto'])) {
+            unlink("../umum/foto/" . $row['foto']);
+        }
+        mysqli_query($conn, "DELETE FROM perkembangan_anak WHERE id=$id");
+        echo "<script>alert('Data berhasil dihapus!'); window.location='admin.php?page=perkembangan';</script>";
+        exit;
     }
-    mysqli_query($conn, "DELETE FROM perkembangan_anak WHERE id=$id");
-    echo "<script>alert('Data berhasil dihapus!'); window.location='admin.php?page=perkembangan';</script>";
-    exit;
-}
 
-$editData = null;
-if (isset($_GET['edit'])) {
-    $id = (int)$_GET['edit'];
-    $res = mysqli_query($conn, "SELECT * FROM perkembangan_anak WHERE id=$id");
-    $editData = mysqli_fetch_assoc($res);
-}
+    if (isset($_GET['edit'])) {
+        $id = (int)$_GET['edit'];
+        $res = mysqli_query($conn, "SELECT * FROM perkembangan_anak WHERE id=$id");
+        $editData = $res ? mysqli_fetch_assoc($res) : null;
+    }
 
-$data = mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC");
+    $data = mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC");
+} else {
+    $data = false;
+}
 ?>
 
 <style>
@@ -110,9 +111,12 @@ $data = mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC");
             <label class="form-label">Prestasi / Catatan Perkembangan</label>
             <textarea name="prestasi" class="form-control" rows="3" placeholder="Contoh: Juara 1 Lomba Mewarnai Se-Kecamatan" required><?= $editData ? htmlspecialchars($editData['prestasi']) : '' ?></textarea>
         </div>
-        <button type="submit" name="<?= $editData ? 'update' : 'tambah' ?>" class="btn-save">
+        <button type="submit" name="<?= $editData ? 'update' : 'tambah' ?>" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>
             <?= $editData ? '💾 Update Perkembangan' : '💾 Simpan Perkembangan' ?>
         </button>
+        <?php if (!$conn): ?>
+        <small class="text-danger d-block mt-2">⚠️ Tombol dinonaktifkan karena koneksi database bermasalah.</small>
+        <?php endif; ?>
         <?php if($editData): ?>
             <a href="admin.php?page=perkembangan" class="btn-cancel">Batal</a>
         <?php endif; ?>
@@ -133,7 +137,7 @@ $data = mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC");
                 </tr>
             </thead>
             <tbody>
-                <?php $no=1; if(mysqli_num_rows($data)>0): while($row=mysqli_fetch_assoc($data)): ?>
+                <?php $no=1; if($data && mysqli_num_rows($data)>0): while($row=mysqli_fetch_assoc($data)): ?>
                 <tr>
                     <td><?= $no++ ?></td>
                     <td>

@@ -3,33 +3,38 @@ session_start();
 require_once "db.php";
 
 if (isset($_POST['login'])) {
-    $user = mysqli_real_escape_string($conn, trim($_POST['username']));
-    $pass = mysqli_real_escape_string($conn, trim($_POST['password']));
-    
-    // Check if user exists first to provide better feedback
-    $check_user = mysqli_query($conn, "SELECT * FROM admin WHERE username = '$user'");
-    
-    if ($check_user && mysqli_num_rows($check_user) === 1) {
-        $row = mysqli_fetch_assoc($check_user);
-        // Compare password (using plain text as per current setup)
-        if ($row['password'] === $pass) {
-            $_SESSION['login'] = true;
-            $_SESSION['admin_id'] = $row['id'];
-            $_SESSION['admin_user'] = $row['username'];
-            $_SESSION['admin_nama'] = $row['nama_lengkap'];
-            
-            header("Location: admin.php");
-            exit;
+    if (!$conn) {
+        $error = true;
+        $error_msg = "Koneksi database gagal: " . ($db_error ?? "Detail tidak diketahui") . ". Silakan periksa kembali konfigurasi database di file <code>admin/db.php</code>.";
+    } else {
+        $user = mysqli_real_escape_string($conn, trim($_POST['username']));
+        $pass = mysqli_real_escape_string($conn, trim($_POST['password']));
+        
+        // Check if user exists first to provide better feedback
+        $check_user = mysqli_query($conn, "SELECT * FROM admin WHERE username = '$user'");
+        
+        if ($check_user && mysqli_num_rows($check_user) === 1) {
+            $row = mysqli_fetch_assoc($check_user);
+            // Compare password (using plain text as per current setup)
+            if ($row['password'] === $pass) {
+                $_SESSION['login'] = true;
+                $_SESSION['admin_id'] = $row['id'];
+                $_SESSION['admin_user'] = $row['username'];
+                $_SESSION['admin_nama'] = $row['nama_lengkap'];
+                
+                header("Location: admin.php");
+                exit;
+            } else {
+                $error = true;
+                $error_msg = "Password salah.";
+            }
         } else {
             $error = true;
-            $error_msg = "Password salah.";
-        }
-    } else {
-        $error = true;
-        if (!$check_user) {
-            $error_msg = "Database Error: Table 'admin' belum ada. <a href='fix_admin.php' style='color:inherit;text-decoration:underline;'>Klik di sini untuk membuat tabel admin otomatis</a>.";
-        } else {
-            $error_msg = "Username '$user' tidak ditemukan di database.";
+            if (!$check_user) {
+                $error_msg = "Database Error: Table 'admin' belum ada. <a href='fix_admin.php' style='color:inherit;text-decoration:underline;'>Klik di sini untuk membuat tabel admin otomatis</a>.";
+            } else {
+                $error_msg = "Username '$user' tidak ditemukan di database.";
+            }
         }
     }
 }
@@ -119,6 +124,11 @@ if (isset($_POST['login'])) {
     <div class="login-right">
         <h3>Selamat Datang</h3>
         <p class="sub">Masukkan kredensial admin Anda</p>
+        <?php if (!$conn): ?>
+        <div class="alert-err" style="background:#fffbeb; border:1px solid #fde68a; color:#b45309;">
+            ⚠ <strong>Database Offline:</strong> Tidak dapat terhubung ke database. Silakan periksa konfigurasi database Anda di file <code>admin/db.php</code>.
+        </div>
+        <?php endif; ?>
         <?php if (!empty($error)): ?>
         <div class="alert-err">
             ⚠ <?= isset($error_msg) ? $error_msg : "Username atau password salah." ?>

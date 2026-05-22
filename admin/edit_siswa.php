@@ -3,22 +3,29 @@ session_start();
 if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
 include 'db.php';
 
-$id     = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$result = mysqli_query($conn, "SELECT * FROM siswa WHERE id=$id");
-$data   = mysqli_fetch_assoc($result);
-if (!$data) { echo "<script>alert('Data tidak ditemukan!');window.location='admin.php?page=siswa';</script>"; exit; }
+$id   = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$data = null;
 
-if (isset($_POST['update'])) {
-    $nama_anak     = mysqli_real_escape_string($conn, $_POST['nama']);
-    $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['ttl']);
-    $alamat        = mysqli_real_escape_string($conn, $_POST['alamat']);
-    $jenis_kelamin = mysqli_real_escape_string($conn, $_POST['jenis_kelamin']);
-    $nama_ayah     = mysqli_real_escape_string($conn, $_POST['nama_ayah']);
-    $nama_ibu      = mysqli_real_escape_string($conn, $_POST['nama_ibu']);
-    $no_hp_ortu    = mysqli_real_escape_string($conn, $_POST['no_ortu']);
-    if (mysqli_query($conn, "UPDATE siswa SET nama_anak='$nama_anak',jenis_kelamin='$jenis_kelamin',tanggal_lahir='$tanggal_lahir',nama_ayah='$nama_ayah',nama_ibu='$nama_ibu',no_hp_ortu='$no_hp_ortu',alamat='$alamat' WHERE id=$id")) {
-        echo "<script>alert('Data berhasil diupdate!');window.location='admin.php?page=siswa';</script>"; exit;
+if ($conn) {
+    $result = mysqli_query($conn, "SELECT * FROM siswa WHERE id=$id");
+    $data   = $result ? mysqli_fetch_assoc($result) : null;
+    
+    if (isset($_POST['update'])) {
+        $nama_anak     = mysqli_real_escape_string($conn, $_POST['nama']);
+        $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['ttl']);
+        $alamat        = mysqli_real_escape_string($conn, $_POST['alamat']);
+        $jenis_kelamin = mysqli_real_escape_string($conn, $_POST['jenis_kelamin']);
+        $nama_ayah     = mysqli_real_escape_string($conn, $_POST['nama_ayah']);
+        $nama_ibu      = mysqli_real_escape_string($conn, $_POST['nama_ibu']);
+        $no_hp_ortu    = mysqli_real_escape_string($conn, $_POST['no_ortu']);
+        if (mysqli_query($conn, "UPDATE siswa SET nama_anak='$nama_anak',jenis_kelamin='$jenis_kelamin',tanggal_lahir='$tanggal_lahir',nama_ayah='$nama_ayah',nama_ibu='$nama_ibu',no_hp_ortu='$no_hp_ortu',alamat='$alamat' WHERE id=$id")) {
+            echo "<script>alert('Data berhasil diupdate!');window.location='admin.php?page=siswa';</script>"; exit;
+        }
     }
+}
+
+if (!$data) { 
+    $data = ['nama_anak'=>'','jenis_kelamin'=>'','tanggal_lahir'=>'','nama_ayah'=>'','nama_ibu'=>'','no_hp_ortu'=>'','alamat'=>''];
 }
 ?>
 <!DOCTYPE html>
@@ -60,6 +67,11 @@ if (isset($_POST['update'])) {
     </div>
     <form method="POST">
     <div class="edit-body">
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning border-0 mb-3" style="border-radius: 10px; background: #fffbeb; color: #b45309; font-size: 0.85rem; padding: 12px 16px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa kembali konfigurasi database Anda di hosting. Penyimpanan dinonaktifkan saat offline.
+        </div>
+        <?php endif; ?>
         <div class="row2 mb3">
             <div class="col">
                 <label class="form-label">Nama Anak</label>
@@ -98,7 +110,7 @@ if (isset($_POST['update'])) {
     </div>
     <div class="edit-foot">
         <a href="admin.php?page=siswa" class="btn-cancel">Batal</a>
-        <button type="submit" name="update" class="btn-save">💾 Simpan Perubahan</button>
+        <button type="submit" name="update" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>💾 Simpan Perubahan</button>
     </div>
     </form>
 </div>

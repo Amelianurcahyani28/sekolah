@@ -1,38 +1,42 @@
 <?php
 include 'db.php';
 
-if (isset($_POST['tambah'])) {
-    $nama_anak     = mysqli_real_escape_string($conn, $_POST['nama']);
-    $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['ttl']);
-    $alamat        = mysqli_real_escape_string($conn, $_POST['alamat']);
-    $jenis_kelamin = mysqli_real_escape_string($conn, $_POST['jenis_kelamin']);
-    $nama_ayah     = mysqli_real_escape_string($conn, $_POST['nama_ayah']);
-    $nama_ibu      = mysqli_real_escape_string($conn, $_POST['nama_ibu']);
-    $no_hp_ortu    = mysqli_real_escape_string($conn, $_POST['no_ortu']);
-    if (mysqli_query($conn, "INSERT INTO siswa (nama_anak,jenis_kelamin,tanggal_lahir,nama_ayah,nama_ibu,no_hp_ortu,alamat) VALUES ('$nama_anak','$jenis_kelamin','$tanggal_lahir','$nama_ayah','$nama_ibu','$no_hp_ortu','$alamat')")) {
-        echo "<script>alert('Siswa berhasil ditambahkan!');window.location='admin.php?page=siswa';</script>"; exit;
+if ($conn) {
+    if (isset($_POST['tambah'])) {
+        $nama_anak     = mysqli_real_escape_string($conn, $_POST['nama']);
+        $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['ttl']);
+        $alamat        = mysqli_real_escape_string($conn, $_POST['alamat']);
+        $jenis_kelamin = mysqli_real_escape_string($conn, $_POST['jenis_kelamin']);
+        $nama_ayah     = mysqli_real_escape_string($conn, $_POST['nama_ayah']);
+        $nama_ibu      = mysqli_real_escape_string($conn, $_POST['nama_ibu']);
+        $no_hp_ortu    = mysqli_real_escape_string($conn, $_POST['no_ortu']);
+        if (mysqli_query($conn, "INSERT INTO siswa (nama_anak,jenis_kelamin,tanggal_lahir,nama_ayah,nama_ibu,no_hp_ortu,alamat) VALUES ('$nama_anak','$jenis_kelamin','$tanggal_lahir','$nama_ayah','$nama_ibu','$no_hp_ortu','$alamat')")) {
+            echo "<script>alert('Siswa berhasil ditambahkan!');window.location='admin.php?page=siswa';</script>"; exit;
+        }
     }
-}
 
-if (isset($_POST['simpan_info'])) {
-    $alamat_sekolah = mysqli_real_escape_string($conn, $_POST['alamat_sekolah']);
-    $no_telp        = mysqli_real_escape_string($conn, $_POST['no_telp']);
-    $email          = mysqli_real_escape_string($conn, $_POST['email']);
-    $cek = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-    if (mysqli_num_rows($cek) > 0) {
-        mysqli_query($conn, "UPDATE profil SET alamat_sekolah='$alamat_sekolah',no_telp='$no_telp',email='$email'");
-    } else {
-        mysqli_query($conn, "INSERT INTO profil (alamat_sekolah,no_telp,email) VALUES ('$alamat_sekolah','$no_telp','$email')");
+    if (isset($_POST['simpan_info'])) {
+        $alamat_sekolah = mysqli_real_escape_string($conn, $_POST['alamat_sekolah']);
+        $no_telp        = mysqli_real_escape_string($conn, $_POST['no_telp']);
+        $email          = mysqli_real_escape_string($conn, $_POST['email']);
+        $cek = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+        if ($cek && mysqli_num_rows($cek) > 0) {
+            mysqli_query($conn, "UPDATE profil SET alamat_sekolah='$alamat_sekolah',no_telp='$no_telp',email='$email'");
+        } else {
+            mysqli_query($conn, "INSERT INTO profil (alamat_sekolah,no_telp,email) VALUES ('$alamat_sekolah','$no_telp','$email')");
+        }
+        echo "<script>alert('Info sekolah disimpan!');window.location='admin.php?page=siswa';</script>"; exit;
     }
-    echo "<script>alert('Info sekolah disimpan!');window.location='admin.php?page=siswa';</script>"; exit;
-}
 
-if (isset($_GET['hapus'])) {
-    mysqli_query($conn, "DELETE FROM siswa WHERE id=" . (int)$_GET['hapus']);
-    echo "<script>alert('Data dihapus!');window.location='admin.php?page=siswa';</script>"; exit;
-}
+    if (isset($_GET['hapus'])) {
+        mysqli_query($conn, "DELETE FROM siswa WHERE id=" . (int)$_GET['hapus']);
+        echo "<script>alert('Data dihapus!');window.location='admin.php?page=siswa';</script>"; exit;
+    }
 
-$data        = mysqli_query($conn, "SELECT * FROM siswa ORDER BY id DESC");
+    $data = mysqli_query($conn, "SELECT * FROM siswa ORDER BY id DESC");
+} else {
+    $data = false;
+}
 ?>
 
 
@@ -107,7 +111,10 @@ $data        = mysqli_query($conn, "SELECT * FROM siswa ORDER BY id DESC");
             <label class="form-label">Alamat</label>
             <textarea name="alamat" class="form-control" rows="2" required></textarea>
         </div>
-        <button type="submit" name="tambah" class="btn-save">💾 Simpan Data Siswa</button>
+        <button type="submit" name="tambah" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>💾 Simpan Data Siswa</button>
+        <?php if (!$conn): ?>
+        <small class="text-danger d-block mt-2">⚠️ Tombol dinonaktifkan karena koneksi database bermasalah.</small>
+        <?php endif; ?>
     </form>
 </div>
 
@@ -122,7 +129,7 @@ $data        = mysqli_query($conn, "SELECT * FROM siswa ORDER BY id DESC");
                 <tr><th>#</th><th>Nama</th><th>JK</th><th>Tgl Lahir</th><th>Orang Tua</th><th>No HP</th><th>Aksi</th></tr>
             </thead>
             <tbody>
-                <?php $no=1; if(mysqli_num_rows($data)>0): while($row=mysqli_fetch_assoc($data)): ?>
+                <?php $no=1; if($data && mysqli_num_rows($data)>0): while($row=mysqli_fetch_assoc($data)): ?>
                 <tr>
                     <td><?= $no++ ?></td>
                     <td><strong><?= htmlspecialchars($row['nama_anak']) ?></strong><br><small style="color:#94a3b8"><?= htmlspecialchars($row['alamat']) ?></small></td>

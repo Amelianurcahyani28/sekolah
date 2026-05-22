@@ -1,34 +1,35 @@
 <?php
 include 'db.php';
 
-// Column checks moved to SQL file
-
-
-if (isset($_POST['tambah'])) {
-    $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
-    $isi      = mysqli_real_escape_string($conn, $_POST['isi']);
-    $kategori = mysqli_real_escape_string($conn, $_POST['kategori']);
-    $gambar   = null;
-    if (!empty($_FILES['gambar']['name'])) {
-        $target_dir = "../umum/foto/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        $file_name   = time() . '_' . basename($_FILES['gambar']['name']);
-        if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_dir . $file_name)) $gambar = $file_name;
+if ($conn) {
+    if (isset($_POST['tambah'])) {
+        $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
+        $isi      = mysqli_real_escape_string($conn, $_POST['isi']);
+        $kategori = mysqli_real_escape_string($conn, $_POST['kategori']);
+        $gambar   = null;
+        if (!empty($_FILES['gambar']['name'])) {
+            $target_dir = "../umum/foto/";
+            if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+            $file_name   = time() . '_' . basename($_FILES['gambar']['name']);
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_dir . $file_name)) $gambar = $file_name;
+        }
+        if ($gambar) {
+            mysqli_query($conn, "INSERT INTO artikel (judul, isi, kategori, gambar, tanggal) VALUES ('$judul', '$isi', '$kategori', '$gambar', NOW())");
+        } else {
+            mysqli_query($conn, "INSERT INTO artikel (judul, isi, kategori, tanggal) VALUES ('$judul', '$isi', '$kategori', NOW())");
+        }
+        echo "<script>alert('Artikel berhasil ditambahkan!');window.location='admin.php?page=artikel';</script>"; exit;
     }
-    if ($gambar) {
-        mysqli_query($conn, "INSERT INTO artikel (judul, isi, kategori, gambar, tanggal) VALUES ('$judul', '$isi', '$kategori', '$gambar', NOW())");
-    } else {
-        mysqli_query($conn, "INSERT INTO artikel (judul, isi, kategori, tanggal) VALUES ('$judul', '$isi', '$kategori', NOW())");
+
+    if (isset($_GET['hapus'])) {
+        mysqli_query($conn, "DELETE FROM artikel WHERE id=" . (int)$_GET['hapus']);
+        header("Location: ?page=artikel"); exit;
     }
-    echo "<script>alert('Artikel berhasil ditambahkan!');</script>";
-}
 
-if (isset($_GET['hapus'])) {
-    mysqli_query($conn, "DELETE FROM artikel WHERE id=" . (int)$_GET['hapus']);
-    header("Location: ?page=artikel"); exit;
+    $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
+} else {
+    $data = false;
 }
-
-$data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
 ?>
 
 <style>
@@ -90,7 +91,10 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
             <label class="form-label">Foto Artikel</label>
             <input type="file" name="gambar" class="form-control" accept="image/*">
         </div>
-        <button type="submit" name="tambah" class="btn-save">🚀 Publikasikan</button>
+        <button type="submit" name="tambah" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>🚀 Publikasikan</button>
+        <?php if (!$conn): ?>
+        <small class="text-danger d-block mt-2">⚠️ Tombol dinonaktifkan karena koneksi database bermasalah.</small>
+        <?php endif; ?>
     </form>
 </div>
 
@@ -103,6 +107,7 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
                 <tr><th>#</th><th>Judul</th><th>Kategori</th><th>Foto</th><th>Tanggal</th><th>Aksi</th></tr>
             </thead>
             <tbody>
+                <?php if ($data): ?>
                 <?php $no=1; while($row=mysqli_fetch_assoc($data)):
                     $kat = $row['kategori'];
                     $bc = 'kat-default';
@@ -123,7 +128,8 @@ $data = mysqli_query($conn, "SELECT * FROM artikel ORDER BY id DESC");
                     </td>
                 </tr>
                 <?php endwhile; ?>
-                <?php if(mysqli_num_rows(mysqli_query($conn,"SELECT id FROM artikel"))==0): ?>
+                <?php endif; ?>
+                <?php if(!$data || mysqli_num_rows($data)==0): ?>
                 <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">Belum ada artikel</td></tr>
                 <?php endif; ?>
             </tbody>

@@ -2,6 +2,13 @@
 include 'koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$conn) {
+        echo "<script>
+            alert('Gagal mengirim pendaftaran karena koneksi database bermasalah. Silakan hubungi admin atau periksa konfigurasi database Anda di hosting.');
+            window.history.back();
+        </script>";
+        exit;
+    }
 
     // 1. Tangkap data dari POST (sesuaikan dengan 'name' di daftar.php)
     $nama_anak      = mysqli_real_escape_string($conn, $_POST['nama_anak'] ?? '');

@@ -2,7 +2,7 @@
 include 'header.php';
 include 'koneksi.php';
 
-$data = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+$data = $conn ? mysqli_query($conn, "SELECT * FROM profil LIMIT 1") : false;
 $row = ($data && mysqli_num_rows($data) > 0) ? mysqli_fetch_assoc($data) : null;
 
 $tentang      = $row['tentang']      ?? 'TK Maessar Bayan adalah lembaga pendidikan anak usia dini yang berfokus pada perkembangan karakter dan potensi anak.';
@@ -11,8 +11,7 @@ $misi         = $row['misi']         ?? 'Menyelenggarakan pembelajaran yang meny
 $kepsek_nama  = $row['kepsek_nama']  ?? 'Hj. Siti Aisyah, S.Pd';
 $kepsek_quote = $row['kepsek_quote'] ?? 'Pendidikan adalah tiket masa depan bagi mereka yang menyiapkannya hari ini.';
 
-$kepsek_foto  = !empty($row['kepsek_foto']) ? 'foto/' . $row['kepsek_foto'] : 'foto/logo.jpeg'; 
-$foto_hero    = !empty($row['foto_hero']) ? 'foto/' . $row['foto_hero'] : '';
+$kepsek_foto  = !empty($row['kepsek_foto']) ? 'foto/' . $row['kepsek_foto'] : 'foto/logo.jpeg';
 
 
 $escape = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
@@ -92,9 +91,7 @@ body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
     color:#64748b; font-style:italic; line-height:1.7; text-align:left;
 }
 
-/* Hero banner image */
-.hero-banner { border-radius:20px; overflow:hidden; margin-bottom:40px; box-shadow:0 10px 40px rgba(0,0,0,.1); }
-.hero-banner img { width:100%; display:block; max-height:340px; object-fit:cover; }
+
 
 footer { background:#0f172a !important; color:#94a3b8 !important; padding:28px 0 !important; margin-top:0 !important; border-radius:0 !important; }
 footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
@@ -113,11 +110,13 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
 <div class="content-area">
     <div class="container">
 
-        <?php if ($foto_hero): ?>
-        <div class="hero-banner">
-            <img src="<?= $escape($foto_hero) ?>" alt="Banner Sekolah">
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning text-center border-0 shadow-sm mb-4" style="border-radius: 12px; background: #fffbeb; color: #b45309; font-size: 0.9rem; padding: 12px 20px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa konfigurasi database Anda di hosting. Halaman tetap dapat diakses dengan data default.
         </div>
         <?php endif; ?>
+
+
 
         <div class="row g-4">
             <!-- Kolom Kiri -->

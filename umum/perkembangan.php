@@ -89,10 +89,15 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
             </div>
         </div>
 
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning text-center border-0 shadow-sm mb-4" style="border-radius: 12px; background: #fffbeb; color: #b45309; font-size: 0.9rem; padding: 12px 20px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa konfigurasi database Anda di hosting. Halaman tetap dapat diakses dengan data default.
+        </div>
+        <?php endif; ?>
         <div class="row g-4">
             <?php
-            $prestasi = mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC");
-            if(mysqli_num_rows($prestasi) > 0):
+            $prestasi = $conn ? mysqli_query($conn, "SELECT * FROM perkembangan_anak ORDER BY id DESC") : false;
+            if($prestasi && mysqli_num_rows($prestasi) > 0):
                 while($row = mysqli_fetch_assoc($prestasi)):
             ?>
             <div class="col-sm-6 col-lg-4">

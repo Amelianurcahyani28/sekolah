@@ -4,48 +4,41 @@ include 'db.php';
 // Column checks moved to SQL file
 
 
-$cek  = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-$data = $cek ? mysqli_fetch_assoc($cek) : null;
+$data = null;
+if ($conn) {
+    $cek  = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+    $data = $cek ? mysqli_fetch_assoc($cek) : null;
 
-if (isset($_POST['update'])) {
-    $tentang      = mysqli_real_escape_string($conn, $_POST['tentang']);
-    $visi         = mysqli_real_escape_string($conn, $_POST['visi']);
-    $misi         = mysqli_real_escape_string($conn, $_POST['misi']);
-    $kepsek_nama  = mysqli_real_escape_string($conn, $_POST['kepsek_nama']);
-    $kepsek_quote = mysqli_real_escape_string($conn, $_POST['kepsek_quote']);
-    $kepsek_foto  = $data['kepsek_foto'] ?? '';
-    $foto_sekolah = $data['foto_sekolah'] ?? '';
+    if (isset($_POST['update'])) {
+        $tentang      = mysqli_real_escape_string($conn, $_POST['tentang']);
+        $visi         = mysqli_real_escape_string($conn, $_POST['visi']);
+        $misi         = mysqli_real_escape_string($conn, $_POST['misi']);
+        $kepsek_nama  = mysqli_real_escape_string($conn, $_POST['kepsek_nama']);
+        $kepsek_quote = mysqli_real_escape_string($conn, $_POST['kepsek_quote']);
+        $kepsek_foto  = $data['kepsek_foto'] ?? '';
 
-    $target_dir = "../umum/foto/";
-    if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+        $target_dir = "../umum/foto/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
 
-    if (!empty($_FILES['kepsek_foto']['name'])) {
-        $fn = time() . '_kepsek_' . basename($_FILES['kepsek_foto']['name']);
-        if (move_uploaded_file($_FILES['kepsek_foto']['tmp_name'], $target_dir . $fn)) {
-            if ($kepsek_foto) @unlink($target_dir . $kepsek_foto);
-            $kepsek_foto = $fn;
+        if (!empty($_FILES['kepsek_foto']['name'])) {
+            $fn = time() . '_kepsek_' . basename($_FILES['kepsek_foto']['name']);
+            if (move_uploaded_file($_FILES['kepsek_foto']['tmp_name'], $target_dir . $fn)) {
+                if ($kepsek_foto) @unlink($target_dir . $kepsek_foto);
+                $kepsek_foto = $fn;
+            }
         }
-    }
-    if (!empty($_FILES['foto_sekolah']['name'])) {
-        $fn2 = time() . '_sekolah_' . basename($_FILES['foto_sekolah']['name']);
-        if (move_uploaded_file($_FILES['foto_sekolah']['tmp_name'], $target_dir . $fn2)) {
-            if ($foto_sekolah) @unlink($target_dir . $foto_sekolah);
-            $foto_sekolah = $fn2;
-        }
-    }
 
-    $cek2 = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-    if ($cek2 && mysqli_num_rows($cek2) > 0) {
-        mysqli_query($conn, "UPDATE profil SET tentang='$tentang',visi='$visi',misi='$misi',kepsek_nama='$kepsek_nama',kepsek_quote='$kepsek_quote',kepsek_foto='$kepsek_foto',foto_sekolah='$foto_sekolah'");
-    } else {
-        mysqli_query($conn, "INSERT INTO profil (tentang,visi,misi,kepsek_nama,kepsek_quote,kepsek_foto,foto_sekolah) VALUES ('$tentang','$visi','$misi','$kepsek_nama','$kepsek_quote','$kepsek_foto','$foto_sekolah')");
+        $cek2 = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
+        if ($cek2 && mysqli_num_rows($cek2) > 0) {
+            mysqli_query($conn, "UPDATE profil SET tentang='$tentang',visi='$visi',misi='$misi',kepsek_nama='$kepsek_nama',kepsek_quote='$kepsek_quote',kepsek_foto='$kepsek_foto'");
+        } else {
+            mysqli_query($conn, "INSERT INTO profil (tentang,visi,misi,kepsek_nama,kepsek_quote,kepsek_foto) VALUES ('$tentang','$visi','$misi','$kepsek_nama','$kepsek_quote','$kepsek_foto')");
+        }
+        echo "<script>alert('Berhasil disimpan!');window.location='admin.php?page=profil';</script>"; exit;
     }
-    echo "<script>alert('Berhasil disimpan!');window.location='admin.php?page=profil';</script>";
 }
 
-$result = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-$row    = $result ? mysqli_fetch_assoc($result) : [];
-$row    = $row ?: ['tentang'=>'','visi'=>'','misi'=>'','kepsek_nama'=>'','kepsek_quote'=>'','kepsek_foto'=>'','foto_sekolah'=>''];
+$row = $data ?: ['tentang'=>'','visi'=>'','misi'=>'','kepsek_nama'=>'','kepsek_quote'=>'','kepsek_foto'=>''];
 ?>
 
 <style>
@@ -77,21 +70,12 @@ $row    = $row ?: ['tentang'=>'','visi'=>'','misi'=>'','kepsek_nama'=>'','kepsek
 <div class="mod-card">
     <form method="POST" enctype="multipart/form-data">
 
-        <!-- Tentang & Foto Sekolah -->
+        <!-- Tentang Sekolah -->
         <p class="section-head">🏫 Tentang Sekolah</p>
-        <div class="row mb-4">
-            <div class="col-8">
-                <div class="mb-3">
-                    <label class="form-label">Deskripsi Sekolah</label>
-                    <textarea name="tentang" class="form-control" rows="5"><?= htmlspecialchars($row['tentang']) ?></textarea>
-                </div>
-            </div>
-            <div class="col-4">
-                <label class="form-label">Foto Utama Sekolah</label>
-                <input type="file" name="foto_sekolah" class="form-control" accept="image/*">
-                <p class="hint">Biarkan kosong jika tidak ingin mengganti</p>
-                <?php $ps = !empty($row['foto_sekolah']) ? "../umum/foto/".$row['foto_sekolah'] : "../umum/sekolah.jpeg"; ?>
-                <img src="<?= htmlspecialchars($ps) ?>" class="preview-img" alt="Foto Sekolah">
+        <div class="mb-4">
+            <div class="mb-3">
+                <label class="form-label">Deskripsi Sekolah</label>
+                <textarea name="tentang" class="form-control" rows="5"><?= htmlspecialchars($row['tentang']) ?></textarea>
             </div>
         </div>
 
@@ -133,6 +117,9 @@ $row    = $row ?: ['tentang'=>'','visi'=>'','misi'=>'','kepsek_nama'=>'','kepsek
             </div>
         </div>
 
-        <button type="submit" name="update" class="btn-save">💾 Simpan Perubahan</button>
+        <button type="submit" name="update" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>💾 Simpan Perubahan</button>
+        <?php if (!$conn): ?>
+        <small class="text-danger d-block mt-2">⚠️ Tombol dinonaktifkan karena koneksi database bermasalah.</small>
+        <?php endif; ?>
     </form>
 </div>

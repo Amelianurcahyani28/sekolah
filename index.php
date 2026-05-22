@@ -1,6 +1,28 @@
 <?php 
 $is_root = true;
 include 'umum/header.php'; 
+include_once 'admin/db.php';
+
+// Fetch home configuration
+$home_judul = "TK Maessar Bayan";
+$home_deskripsi = "PAUD Maessar Bayan hadir untuk menemani tumbuh kembang anak dengan pendekatan bermain yang menyenangkan, kreatif, dan penuh kasih sayang.";
+$home_foto = "umum/foto/foto_bersama.jpeg";
+
+if (isset($conn) && $conn) {
+    $home_query = mysqli_query($conn, "SELECT * FROM beranda LIMIT 1");
+    if ($home_query && mysqli_num_rows($home_query) > 0) {
+        $home_data = mysqli_fetch_assoc($home_query);
+        if (!empty($home_data['judul'])) {
+            $home_judul = $home_data['judul'];
+        }
+        if (!empty($home_data['deskripsi'])) {
+            $home_deskripsi = $home_data['deskripsi'];
+        }
+        if (!empty($home_data['foto'])) {
+            $home_foto = "umum/foto/" . $home_data['foto'];
+        }
+    }
+}
 ?>
 
 <style>
@@ -174,16 +196,15 @@ body {
 }
 .hero-img-container:hover img { transform: scale(1.03); }
 .hero-img-badge {
-    position: absolute;
-    bottom: 20px; left: 20px;
     background: rgba(255,255,255,.95);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 12px 16px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
     box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    margin-bottom: 30px;
 }
 .hero-img-badge .icon { font-size: 1.5rem; }
 .hero-img-badge .text strong { display: block; font-size: .85rem; font-weight: 700; color: #0f172a; }
@@ -338,6 +359,27 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,.15);
 }
 .btn-white:hover { color: #4f46e5; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.2); }
+.btn-white-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid white;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: .95rem;
+    transition: all .3s;
+    position: relative; z-index: 1;
+    background: transparent;
+}
+.btn-white-outline:hover {
+    background: white;
+    color: #6366f1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
 
 /* ── FOOTER OVERRIDE ── */
 footer {
@@ -369,28 +411,82 @@ footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
                 </h1>
 
                 <h1>
-                    Tumbuh Bersama,<br>
-                    <span class="highlight">Belajar dengan Ceria</span>
+                    <?php if ($home_judul == "TK Maessar Bayan" || $home_judul == "TK Maessar Bayan"): ?>
+                        Tumbuh Bersama,<br>
+                        <span class="highlight">Belajar dengan Ceria</span>
+                    <?php else: ?>
+                        <?= nl2br(htmlspecialchars($home_judul)) ?>
+                    <?php endif; ?>
                 </h1>
                 <p class="lead">
-                    PAUD Maessar Bayan hadir untuk menemani tumbuh kembang anak dengan pendekatan bermain yang menyenangkan, kreatif, dan penuh kasih sayang.
+                    <?= htmlspecialchars($home_deskripsi) ?>
                 </p>
+
+                <div class="hero-img-badge">
+                    <span class="icon">🏫</span>
+                    <div class="text">
+                        <strong>PAUD Maessar Bayan</strong>
+                        <span>Terakreditasi & Terpercaya</span>
+                    </div>
+                </div>
+
             </div>
             <div class="col-lg-6">
                 <div class="hero-img-container">
-                    <img src="umum/foto/foto_bersama.jpeg" alt="Siswa PAUD Maessar Bayan">
-                    <div class="hero-img-badge">
-                        <span class="icon">🏫</span>
-                        <div class="text">
-                            <strong>PAUD Maessar Bayan</strong>
-                            <span>Terakreditasi C & Terpercaya</span>
+                    <?php
+                    $clean_foto = preg_replace('#^umum/foto/#', '', $home_foto);
+                    $fotos = explode(',', $clean_foto);
+                    $final_fotos = [];
+                    foreach ($fotos as $f) {
+                        $f = trim($f);
+                        if (empty($f)) continue;
+                        $path = "umum/foto/" . $f;
+                        if (file_exists($path) || $f == "foto_bersama.jpeg") {
+                            $final_fotos[] = $path;
+                        }
+                    }
+                    if (empty($final_fotos)) {
+                        $final_fotos[] = "umum/foto/foto_bersama.jpeg";
+                    }
+                    ?>
+                    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false">
+                        <div class="carousel-inner">
+                            <?php foreach ($final_fotos as $index => $img): ?>
+                                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                                    <img src="<?= htmlspecialchars($img) ?>" class="d-block w-100" alt="Siswa PAUD Maessar Bayan">
+                                </div>
+                            <?php endforeach; ?>
                         </div>
+                        <?php if (count($final_fotos) > 1): ?>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var myCarouselElement = document.querySelector('#heroCarousel');
+    if(myCarouselElement && window.bootstrap) {
+        var carousel = new bootstrap.Carousel(myCarouselElement, {
+            interval: 3000,
+            ride: 'carousel',
+            pause: false
+        });
+        carousel.cycle();
+    }
+});
+</script>
 
 
 <!-- PROGRAM -->
@@ -432,9 +528,11 @@ footer p { color: #94a3b8 !important; font-size: .88rem; margin: 0; }
     <div class="container">
         <h2>Bergabunglah Bersama Kami 🌟</h2>
         <p>Daftarkan putra-putri Anda dan biarkan kami menemani perjalanan belajar terbaik mereka.</p>
-        <a href="umum/daftar.php" class="btn-white">
-            Daftar Sekarang →
-        </a>
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+            <a href="umum/daftar.php" class="btn-white">
+                Daftar Sekarang →
+            </a>
+        </div>
     </div>
 </section>
 

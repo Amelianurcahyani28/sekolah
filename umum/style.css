@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* ============================================
    TK Maessar Bayan - Style CSS
@@ -27,6 +27,15 @@
     --dark-green: #2e7d32;
     --soft-white: #f9fbf9;
     --admin-pink: #d81b60;
+
+    /* Warna Modern UI */
+    --modern-primary: #6366f1;
+    --modern-primary-hover: #4f46e5;
+    --modern-secondary: #8b5cf6;
+    --modern-slate: #0f172a;
+    --modern-gray: #64748b;
+    --modern-bg: #f8fafc;
+    --modern-border: #e2e8f0;
 }
 
 /* BASE STYLES */
@@ -36,17 +45,17 @@ body {
     color: #333;
     overflow-x: hidden;
     position: relative;
-    /* CSS Decoration for Clouds/Stars Background */
+    /* CSS Decoration for Clouds/Stars Background (Standardized Radius) */
     background-image: 
-        radial-gradient(circle at 15% 50%, rgba(255, 234, 167, 0.4) 0%, rgba(255, 234, 167, 0) 50px),
-        radial-gradient(circle at 85% 30%, rgba(135, 206, 235, 0.4) 0%, rgba(135, 206, 235, 0) 40px),
-        radial-gradient(circle at 50% 80%, rgba(255, 182, 193, 0.4) 0%, rgba(255, 182, 193, 0) 60px),
-        radial-gradient(circle at 10% 10%, rgba(168, 230, 207, 0.4) 0%, rgba(168, 230, 207, 0) 30px);
+        radial-gradient(50px circle at 15% 50%, rgba(255, 234, 167, 0.4) 0%, rgba(255, 234, 167, 0) 100%),
+        radial-gradient(40px circle at 85% 30%, rgba(135, 206, 235, 0.4) 0%, rgba(135, 206, 235, 0) 100%),
+        radial-gradient(60px circle at 50% 80%, rgba(255, 182, 193, 0.4) 0%, rgba(255, 182, 193, 0) 100%),
+        radial-gradient(30px circle at 10% 10%, rgba(168, 230, 207, 0.4) 0%, rgba(168, 230, 207, 0) 100%);
     background-attachment: fixed;
 }
 
 h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-brand {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     letter-spacing: 1px;
 }
 
@@ -148,7 +157,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
     color: var(--cute-blue);
     text-shadow: 2px 2px 0px var(--pastel-yellow);
     margin-bottom: 20px;
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     text-align: center;
 }
 .section-fitur .subtitle-cute {
@@ -213,7 +222,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
     border: none;
     padding: 12px 30px;
     border-radius: 40px;
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 16px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 8px 20px rgba(255, 133, 162, 0.4); /* Pink pastel shadow */
@@ -236,7 +245,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
 }
 
 .fitur-title, .info-title {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 1.5rem;
     color: var(--cute-blue);
     margin-bottom: 15px;
@@ -251,7 +260,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
 
 /* SECTION TITLES */
 .section-title-cute, .section-title, .cta-title {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 2.5rem;
     color: var(--cute-pink);
     margin-bottom: 20px;
@@ -271,7 +280,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
     background: white;
 }
 .gallery-caption h3 {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 1.3rem;
     color: var(--cute-blue);
     margin: 0;
@@ -298,14 +307,14 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
     transform: rotate(10deg) scale(1.1);
 }
 .kepsek-nama {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 1.8rem;
     color: var(--cute-purple);
     margin-bottom: 10px;
 }
 .kepsek-jabatan {
     color: var(--cute-pink);
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     font-size: 16px;
     margin-bottom: 20px;
 }
@@ -371,7 +380,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
 .footer-cute a:hover {
     color: white;
     text-decoration: underline;
-    text-decoration-style: wavy;
+    text-decoration-style: underline;
 }
 
 /* RESPONSIVE */
@@ -404,7 +413,7 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
 
 /* ADDITIONAL CUTE CLASSES FROM admin.php */
 .sidebar h3 {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     text-align: center;
     text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
 }
@@ -420,6 +429,63 @@ h1, h2, h3, h4, h5, h6, .title-cute, .section-title-cute, .btn-cute, .navbar-bra
     transform: translateX(10px);
 }
 .content h3 {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', 'Fredoka One', cursive, sans-serif;
     color: var(--cute-blue);
+}
+
+
+/* ============================================
+   PREMIUM MODERN THEME (Inter-based UI Support)
+   ============================================ */
+.theme-modern {
+    font-family: 'Inter', sans-serif !important;
+}
+
+.theme-modern .navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--modern-border) !important;
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0 !important;
+}
+
+.theme-modern .brand-text {
+    background: linear-gradient(135deg, var(--modern-primary), var(--modern-secondary)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.theme-modern .nav-link {
+    color: var(--modern-gray) !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    padding: 6px 14px !important;
+    border-radius: 8px !important;
+    transition: color 0.2s, background 0.2s !important;
+}
+
+.theme-modern .nav-link:hover, 
+.theme-modern .nav-link.active {
+    color: var(--modern-primary) !important;
+    background: transparent !important;
+    transform: none !important;
+}
+
+.theme-modern .btn-daftar {
+    background: linear-gradient(135deg, var(--modern-primary), var(--modern-secondary)) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    border: none !important;
+    transition: opacity 0.2s, transform 0.2s !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.theme-modern .btn-daftar:hover {
+    opacity: 0.88 !important;
+    transform: translateY(-1px) !important;
 }

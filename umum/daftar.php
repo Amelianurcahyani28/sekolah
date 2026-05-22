@@ -1,8 +1,8 @@
 <?php include 'header.php'; ?>
 <?php include 'koneksi.php'; ?>
 <?php
-$query = mysqli_query($conn, "SELECT * FROM profil LIMIT 1");
-$profil = mysqli_fetch_assoc($query);
+$query = $conn ? mysqli_query($conn, "SELECT * FROM profil LIMIT 1") : false;
+$profil = $query ? mysqli_fetch_assoc($query) : null;
 ?>
 
 <style>
@@ -59,6 +59,11 @@ footer p { color:#94a3b8 !important; font-size:.88rem; margin:0; }
 <!-- Content -->
 <section class="daftar-section">
     <div class="container">
+        <?php if (!$conn): ?>
+        <div class="alert alert-warning text-center border-0 shadow-sm mb-4" style="border-radius: 12px; background: #fffbeb; color: #b45309; font-size: 0.9rem; padding: 12px 20px;">
+            ⚠️ <strong>Koneksi Database Bermasalah:</strong> Silakan periksa konfigurasi database Anda di hosting. Pendaftaran membutuhkan database yang online agar dapat disimpan.
+        </div>
+        <?php endif; ?>
         <div class="row g-4">
 
             <!-- Form Pendaftaran (Tengah) -->

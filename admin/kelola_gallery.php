@@ -1,33 +1,37 @@
 <?php
 include 'db.php';
 
-if (isset($_POST['tambah'])) {
-    $judul     = mysqli_real_escape_string($conn, $_POST['judul']);
-    $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    if ($_FILES['gambar']['name']) {
-        $target_dir = "../umum/foto/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        $file_name   = time() . '_' . basename($_FILES['gambar']['name']);
-        $target_file = $target_dir . $file_name;
-        if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
-            mysqli_query($conn, "INSERT INTO gallery (judul, deskripsi, gambar) VALUES ('$judul', '$deskripsi', '$file_name')");
-            header("Location: ?page=gallery&status=success"); exit;
-        } else {
-            header("Location: ?page=gallery&status=failed"); exit;
+if ($conn) {
+    if (isset($_POST['tambah'])) {
+        $judul     = mysqli_real_escape_string($conn, $_POST['judul']);
+        $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
+        if ($_FILES['gambar']['name']) {
+            $target_dir = "../umum/foto/";
+            if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+            $file_name   = time() . '_' . basename($_FILES['gambar']['name']);
+            $target_file = $target_dir . $file_name;
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+                mysqli_query($conn, "INSERT INTO gallery (judul, deskripsi, gambar) VALUES ('$judul', '$deskripsi', '$file_name')");
+                header("Location: ?page=gallery&status=success"); exit;
+            } else {
+                header("Location: ?page=gallery&status=failed"); exit;
+            }
         }
     }
-}
 
-if (isset($_GET['hapus'])) {
-    $id  = $_GET['hapus'];
-    $res = mysqli_query($conn, "SELECT * FROM gallery WHERE id=$id");
-    $r   = mysqli_fetch_assoc($res);
-    if ($r && $r['gambar']) @unlink("../umum/foto/" . $r['gambar']);
-    mysqli_query($conn, "DELETE FROM gallery WHERE id=$id");
-    header("Location: ?page=gallery"); exit;
-}
+    if (isset($_GET['hapus'])) {
+        $id  = intval($_GET['hapus']);
+        $res = mysqli_query($conn, "SELECT * FROM gallery WHERE id=$id");
+        $r   = $res ? mysqli_fetch_assoc($res) : null;
+        if ($r && $r['gambar']) @unlink("../umum/foto/" . $r['gambar']);
+        mysqli_query($conn, "DELETE FROM gallery WHERE id=$id");
+        header("Location: ?page=gallery"); exit;
+    }
 
-$data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
+    $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
+} else {
+    $data = false;
+}
 ?>
 
 <style>
@@ -84,7 +88,10 @@ $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
             <label class="form-label">File Foto</label>
             <input type="file" name="gambar" class="form-control" accept="image/*" required>
         </div>
-        <button type="submit" name="tambah" class="btn-save">Upload Foto</button>
+        <button type="submit" name="tambah" class="btn-save" <?= !$conn ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : '' ?>>Upload Foto</button>
+        <?php if (!$conn): ?>
+        <small class="text-danger d-block mt-2">⚠️ Tombol dinonaktifkan karena koneksi database bermasalah.</small>
+        <?php endif; ?>
     </form>
 </div>
 
@@ -97,6 +104,7 @@ $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
                 <tr><th>#</th><th>Foto</th><th>Judul</th><th>Keterangan</th><th>Aksi</th></tr>
             </thead>
             <tbody>
+                <?php if ($data): ?>
                 <?php $no=1; while($row=mysqli_fetch_assoc($data)): ?>
                 <tr>
                     <td><?= $no++ ?></td>
@@ -109,7 +117,8 @@ $data = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
                     </td>
                 </tr>
                 <?php endwhile; ?>
-                <?php if(mysqli_num_rows(mysqli_query($conn,"SELECT id FROM gallery"))==0): ?>
+                <?php endif; ?>
+                <?php if(!$data || mysqli_num_rows($data)==0): ?>
                 <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">Belum ada foto</td></tr>
                 <?php endif; ?>
             </tbody>
